@@ -49,3 +49,13 @@ Also learned about the security benefits of OO design.
 This comes at a cost of performance(especially memory usage) and just large amount of code.
 Interested in using this Java knowledge to break into Android maybe?
 
+
+Machine Learning by Standford University | Octave
+
+An amazing experience.
+My first course I took on Coursera only to find out later that it is one of the best and oldest on the site.
+With a focus on intuition and understanding the math behind it, I can say it's one of the best courses I took so far.
+Learned how to design, implement, optimize and troubleshoot all kinds of different machine learning models.
+I can't wait to begin Andrew Ng's other AI courses !
+
+
