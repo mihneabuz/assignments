@@ -1,0 +1,3 @@
+Abstract syntax tree builder in x86 assembly
+Calculates a mathematical formula written in polish/prefix notation
+bonus: atoi function from c

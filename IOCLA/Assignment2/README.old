@@ -1,0 +1,34 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+iocla_atoi:
+	initializez eax cu 0
+	verific primul caracter
+		daca e '-', sar peste el
+	pentru fiecare caracter c pe care il citesc:
+		daca c == '\0':
+			break;
+		eax = eax * 10
+		eax = eax + c - '0'
+	verific din nou primul caracter
+		daca e '-', eax = -eax
+	returnez eax;
+
+create_tree:
+	aloc memorie pentru o celula cu malloc(12)
+	citesc urmatorul operator/operand cu functia ajutatoare copy
+	verific daca am citit un operator sau un operand
+		daca am citit operand:
+			il pun in data
+			left si right raman null
+		daca am citit operator:
+			il pun in data
+			apelez recursiv create_tree pentru left
+			apelez recursiv create_tree pentru right
+	returnez pointer spre nodul creat
+	
+functia ajutatoare copy:
+	aloc memorie pentru un sir de caratere cu malloc 
+	cat timp nu ajung la ' ' sau '\0':
+		copiez din stringul de input in copie
+	returnez pointer spre stringul copie

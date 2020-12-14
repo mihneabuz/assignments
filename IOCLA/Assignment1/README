@@ -1,0 +1,4 @@
+Some assembly scripts about string manipulation.
+- Caesar and Vigenere encryption
+- strstr function from C string.h
+- conversion from number in bit string to hexa decimals tring

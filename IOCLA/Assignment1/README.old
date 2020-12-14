@@ -1,0 +1,55 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+
+TASK 1 - One Time Pad
+	- am parcurs sirurile char cu char si am facut xor
+	- am folsit reg al pentru a muta caracterele
+
+TASK 2 - Caesar Cipher
+	- am salvat in memorie lungimea sirului ca sa pot refolosii registrul ecx
+	- in ch am pus valoarea 26, adica numarul de litere din alfabet
+	- am parcurs sirul char cu char si am verificat ce fel de char este
+	  - daca este majuscula -> x = (x - 65 + key) % 26 + 65
+	  - daca este minuscula -> x = (x - 97 + key) % 26 + 97
+	  - altfel, scriu direct x
+
+TASK 3 - Vigenere Cipher
+	- am salvat in memorie key_len si plaintext_len ca sa pot refolosii 
+	registriie ecx si ebx
+    - am extins key in edx, in stringul de output, in asa fel incat
+    characterele speciale, care nu sunt encryptate sa fie trecute direct
+	
+	- am parcurs cheia extinsa si plaintext-ul in paralel si am verificat
+	ce fel de caracter citesc din plaintext
+	  - daca este litera, procedez la fel ca la taskul 2
+	  - daca este caracter special, il ignor pentru ca este deja in cheie
+
+TASK 4 - StrStr
+	- am salvat in memorie lungimea sirului needle pentr a refolosii ecx
+	- am parcurs haystack si needle char cu char incrementand pointerii
+	si verificand cand ajung la caracterul null
+    - in edx pastrez index-ul curent, pe care il mut in [edi] cand gasesc
+    primul caracter din needle
+	
+		- daca needle ajunge la \0 -> am gasit sirul, pot returna
+	    - daca haystack ajunge la \0 -> nu am gasit sirul -> pun len + 1 
+	      in edi si returnez (bad_end)
+
+TASK 5 - Bin to Hex
+	- am salvat in memorie lungimea secventei ca sa pot refolosii reg ecx
+	- cam calculat len%4 ca sa aflu pe cati biti este reprezentata prima
+	cifra din secventa.
+	- initializez bh cu 4 - len % 4	
+	- in bh am retinut cati biti am scris ls cifra curenta
+	  - cand bh ajunge la 4 -> am scris toti bitii unei cifre ->
+	    scriu cifra si resetez bh la 0
+	- in bl am retinut cifra curenta, la fiecare pas fac shl bl si adauga
+	  la bl urmatorul bit
+	
+	- ca sa scriu ciferele in hexa:
+	  - daca bl < 10 -> bl + 48
+	  - daca bl >= 10 -> bl + 55
+	
+
+
