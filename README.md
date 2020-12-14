@@ -1,5 +1,7 @@
 Projects and assignments from different courses I took / am taking.
 
+Tracking my progress and extracting deeper lessons I learned along the way.
+
 
 Introduction to Programing | C
 
@@ -30,10 +32,10 @@ Made me really fascinated with compilers and how they make our work so much simp
 Also learned about exploitations.
 
 
-Algorihtm Analysis | Python
+Algorithm Analysis | Python
 
 The theoretical part.
-Learned about touring machines, decidability, complexities. Gave me new insight on how to aproach problems in a more methodical way. 
-Where before I had a tendancy to throw things at the computer until it worked, I found now that sometimes a piece of paper and some deep thought can vastly accelerate the process.
+Learned about touring machines, decidability, complexities. Gave me new insight on how to approach problems in a more methodical way. 
+Where before I had a tendency to throw things at the computer until it worked, I found now that sometimes a piece of paper and some deep thought can vastly accelerate the process.
 Also I like to think that my code is generally faster now.
 
