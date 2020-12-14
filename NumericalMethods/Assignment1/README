@@ -1,0 +1,50 @@
+Buzatu-Pahontu Mihnea-Nicolae
+315CB
+
+Task1 
+Pentru generate_system am folosit o matrice ajutatoare asemanatoare cu forma
+piramidei ex:
+1 0 0 0
+2 3 0 0
+4 5 6 0
+7 8 9 10
+astfel, vecinii elemnentului A(i, j) sunt:
+A(i-1, j-1) A(i-1, j) - deasupra
+A(i, j-1) A(i, j+1) - pe acelasi nivel
+A(i+1, j) A(i+1, j+1) - sub
+Am tratat special cazurile in care elementul se afla pe o margine
+ca sa formez matricea sistemului, pentru fiecare element, am luat linia 
+corespunzatoare lui si am pus -1 la vecinii lui si numarul de drumuri posibile
+pe diagonala principala.
+
+Pentru matrix_to_csr, am parcurs matricea si am format cei 3 vectori.
+
+Pentru jacobi_factorization si jacobi_sparse, am folosit algoritmi de la 
+curs/lab cu adaptarile necesare.
+
+Task2
+Pentru clustering am initializat centroizi0 asa cum era precizat la partea de
+initializare din enuntul temei dupa care am folosit o metoda iterativa pana cand 
+centroizii nu se mai modifica.
+Am parcurs lista de puncte si am gasit cel mai apropiat centroid pentru fiecare
+apoi am adunat componentele punctului intr-o matrice noua "centroids" si am 
+retinut pentru fiecare cluster, cate puncte are in componenta.
+la sfarsitul parcurgerii, am impartit fiecare linie din centroids la nr de puncte
+astel, obtin centroids0 - vechi si centroids - nou, deci am repetat pana cand 
+nu se mai modifica.
+
+Pentru compute_cost, am parcurs lista de puncte si am gasit distanta euclidiana
+minima pana la un centroid, dupa care am facut suma acestor distante.
+
+Task3
+Pentru rgbHistogram, am citit imaginea intr-o matrice tri-dimensionala folosind
+imread, si am parcurs-o pe toate cele 3 dimensiuni.
+am luat fiecare element x, i-am facut cast la double si am calculat
+x * count_bins / 256 si am incrementat in vectorul solutie elementul de pe
+pozitia parte_intreaga(x)+1 + count_bins*(1,2 sau 3 pentru R, G, respectiv B).
+
+Pentru hsvHistogram, am procedat similar cu functia anterioara, dar am parcurs
+doar pe 2 dimensiuni matricea, pentru a avea acces la componentele RGB la 
+fiecare pas, dupa care le-am convertit in componente HSV folosind algoritmul
+din enuntul temei si am incrementat in vectorul solutie intr-un mod similar
+cu functia anterioara.

@@ -1,0 +1,29 @@
+Buzatu-Pahontu Mihnea-Nicolae
+315CB
+
+Tema 2 - Metode Numerice
+
+Functia Iterative
+-Am construit matricea de "adiacenta" in forma ceruta de algortimul PR:
+-M(i, j) = 1/L(j) daca j se invecineaza cu i; si 0 daca nu
+-Vectorul PR a fost initiat cu valorile 1/n
+
+Functia Algebraic
+-Aceleasi 2 mentiuni de la Iterative sunt valide si aici
+
+Functia PR_Inv
+-Am descompus matricea A in [Q R] folosind algoritmul Gram-Schmidt 
+-Am calculat inversa pe coloane cum este explicat in cerinta folosind o functie SST
+-SST rezolva un sistem Ax = b unde A matrice superior triunghiulara
+
+Functia Apartenenta
+-Am calculat a si b astfel incat functia sa fie continua
+-Rezultatul functiei este acela definit in cerinta
+
+Functia PageRank
+-Am aplicat pe rand Iterative si Algebraic si am afisat output-urile
+-Am folosit functia predefinita sortrows pentru a sorta output-ul functiei
+Algebraic, dupa care am afisat noua ordine si gradul de apartenenta
+
+La testul local, continutul fisierelor graf1.out respectiv graf2.out este
+identic cu cel sugerat in enuntul temei.
