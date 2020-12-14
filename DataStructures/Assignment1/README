@@ -1,0 +1,43 @@
+///////////////////////////////////////////////////////////////////////////////
+//Buzatu-Pahontu Mihnea-Nicolae                                              //
+//315CB                                                                      //
+//README tema1 SD - liste simplu inlantuite                                  //
+//																			 //
+//In main.c se realizeaz citirea comenzilor si apelarea functiilor asociate, //
+//in fFree.h am functiile de eliberare a memorie, in fPrint.h am functiile de//
+//afisare, iar in fFunc.h am functiile de initializare, adaugare de elemente //
+//si manipulare.  Fisierul structures.h este identic cu cel descarcat, cu    //
+//exceptia a doua #define-uri pe care le-am adaugat pentru a retine lungimea //
+//maxima a unei relatii (ex: <=) si a unui tip de date (ex: FLOAT).  		 //
+//                                                                           //
+//Pentru citirea comenzilor am folosit scanf si strcmp. Pentru a stii cand se//
+//termina linia, am mai citit cate un caracter c pe care l-am comparat cu \n //
+//In cazul in care comanda este gresita, citesc toate cuvintele si le afisez //
+//In cazul in care, de exemplu, se introduce un tabel gresit la o functie    //
+//este afisata eroarea si folosesc functia EndCMD() pentru a parcurge pana la//
+//finalul liniei, ignorand restul argumenteor.                               //
+//           																 //
+//Pentru initializare si eliberare memorie am folosit o implementare modulara//
+//folosind functii cum ar fi: AddColumn, AddLine, NewElem, NewLine, respectiv//
+//FreeLineInt, FreeLines, FreeTable, FreeDB.								 //
+//																			 //
+//Pentru parcurgere am folosit o implementare cat mai generica, folosindu-ma //
+//de faptul ca toate tipurile de celule au acelasi sizeof() si ca pointerul  //
+//next* se afla la sizeof(pointer*) biti distanta de inceputul structurii.   //
+//Astfel, am parcurs celulele asa:                                           //
+//for (p = *(char**)linie; p != NULL; p = *(char**)(p + sizeof(void*)))      //
+//Iar liniile le-am parcurs asa:											 //
+//for (p = Table->lines; p != NULL; p = *(char**)(p + sizeof(void*))		 //
+//p,q si r sunt pointeri pe care i-am folosit pentru parcurgeri!			 //
+//																			 //
+//Pentru comenzile SEARCH si DELETE (cel dupa coloana) am folosit o functie  //
+//comuna EditLines. Aceasta primeste ca parametru, pe langa tabel, coloana si//
+//expresia de comaparat, inca un string care poate fi "SEARCH" sau "DELETE". //
+//Functia parcurge coloanele si retine indicele coloanei cu numele primit,   //
+//dupa care parcurge liniile pana la celula cu indicele respectiv si verifica//
+//conditia. In caz pozitiv, in functie de modul primit ca parametru, este    //
+//afisata linia, respectiv stearsa si dealocata								 //
+//																			 //
+//Inafara de acestea, functiile sunt relativ standard pentru lucrul cu liste //
+//simplu inlantuite															 //
+///////////////////////////////////////////////////////////////////////////////

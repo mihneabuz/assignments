@@ -1,0 +1,72 @@
+//Buzatu-Pahontu Mihnea-Nicolae
+//315CB
+
+Tema2 - SD
+
+Pentru rezolvarea temei am folosit urmatoarele strcuturi de date:
+-Liste simplu inlantuite generice folosite in implementarea stivelor si cozilor
+-O lista de taburi care contine pagina curenta si stivele de back
+si forward
+-Stive si cozi generice
+	-o diferanta intre implementarea mea si cea oferita la curs este faptul ca,
+	la introducere, am copiat doar pointerul spre elementul pe care doresc sa
+	il introduc, in loc sa aloc memorie si sa il copiez cu memcpy
+	-am adaugat si o functie InsertPriorityQ care introduce un element intr-o
+	coada astfel incat coada sa fie sortata. In implementarea lui am iterat 
+	prin coada.
+
+Declaratia structurilor si functiilor atasate se afla in structures.h, iar 
+definitiile se afla in structures.c
+
+In utils.c am adaugat o functie "CopyResource" care aloca memorie si copieaza
+o structura de tip resursa, dupa care o returneaza
+
+In main, am deschis fisierele, am initializat variabilele si am folosit un
+while loop pentru a citii toate comenzile pana la EOF. O scurta explicatie a 
+variabilelor:
+CMD -> comanda curenta;
+NEW_URL -> sir de char in care citesc URL-uri noi
+TABS -> inceputul unei liste de taburi
+CURRENT_TAB -> celula din lista de taburi care are tabul curent selectat
+HISTORY -> coada de istoric
+DOWNLOADS -> coada de descarcari in progres
+COMPLETED_DOWNLOADS -> coada de descarcari terminate
+BANDWITH -> valoarea bandwith-ului
+INT_ARG -> o variabila in care citesc argumentele de tip int ale comenzilor
+COPY -> un pointer de tip Resource folosit la copierea in coada de descarcari
+
+Consider ca implementarea comezilor este relativ usoara, asa ca o sa le 
+mentionez doar pe cele mai ample.
+
+-Pentru goto am verificat daca tabul curent are deja o pagina deschisa, caz in
+care o mut in stiva de back si aloc o pagina noua cu URL-ul nou, dupa care
+eliberez stiva de forward, adaug URL-ul nou la coada de history si procesez
+descarcarile (wait) pentru 1 secunda.
+
+-Pentru back am introdus pagina deschisa in tabul curent in stiva forward si 
+am extras o pagina din back pe care o atribui tabului curent. Analog, pentru
+forward am procedad asemanator.
+
+-Pentru deltab am sters ultimul tab, verificand daca acesta este chiar tabul
+curent, urmand ca tabul curent sa devina ultimul tab dupa eliminare.
+
+-Pentru wait am creat functia ProcessDownloads care primeste ca argumente
+coada de descarcari, coada de descarcari finalizate si marimea care urmeaza
+sa fie descarcata -> down_amount (bandwith * time). Cat timp down_amount este
+mai mare sau egala cu dimensiunea ramasa a unei resurse, scad din down_amount
+aceasta dimensiune ramasa si trec resursa in coada de descarcari finalizate.
+Dupa scad din dimensiunea resursei curente ce a mai ramas din down_amount.
+
+Rulare cheker local: 85/85 si 20/20 valgrind
+
+Ca feedback: In ceea ce priveste restrictiile, nu prea am inteles exact ce 
+anume "restrictioneaza". Cele din enunt au fost destul de clare, insa dupa ce
+am citit si cateva posturi de pe forum mi s-au parut contradictorii. Cred ca
+ar fi bine ca restrictiile sa fie gandite mai mult inainte de postarea temei
+si sa fie bine explicate direct din enunt, sa nu necesite parcurgerea 
+forumului unde se pot creea confuzi, mai ales cand mai multi profesori
+raspund la intrebari.
+In ceea ce ma priveste, consider ca am respectat restrictiile din enunt, iar 
+pe cele din forum am incercat sa le respect atat timp cat le intelegeam si
+nu mi se pareau contradictorii.
+
