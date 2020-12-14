@@ -1,6 +1,6 @@
 Projects and assignments from different courses I took / am taking.
 
-Tracking my progress and extracting deeper lessons I learned along the way.
+Tracking my progress and extracting deeper thoughts and lessons I learned along the way.
 
 
 Introduction to Programing | C
@@ -38,4 +38,14 @@ The theoretical part.
 Learned about touring machines, decidability, complexities. Gave me new insight on how to approach problems in a more methodical way. 
 Where before I had a tendency to throw things at the computer until it worked, I found now that sometimes a piece of paper and some deep thought can vastly accelerate the process.
 Also I like to think that my code is generally faster now.
+
+
+Object Oriented Programing | Java
+
+A whole new world.
+A great introduction to Java.
+Learned about how to make a large codebase maintainable and how to make code as modular as possible as to make it possible to have large teams work together. 
+Also learned about the security benefits of OO design.
+This comes at a cost of performance(especially memory usage) and just large amount of code.
+Interested in using this Java knowledge to break into Android maybe?
 
