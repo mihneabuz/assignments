@@ -1,7 +1,9 @@
 import com.opencsv.CSVReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ProductReader {
@@ -32,7 +34,7 @@ public class ProductReader {
             return null;
         }
         try {
-            ArrayList<String> productFields = new ArrayList<String>(5);
+            ArrayList<String> productFields = new ArrayList<>(5);
             productFields.add(fields[0]);
             productFields.add(fields[1]);
             productFields.add(fields[2]);
@@ -51,4 +53,13 @@ public class ProductReader {
             return null;
         }
     }
+
+    public void close() {
+        try {
+            csvreader.close();
+        }
+        catch (IOException e){
+        }
+    }
+
 }

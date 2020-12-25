@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class Product {
     private String uniqueID;
     private String name;
@@ -77,8 +79,11 @@ public class Product {
         stringBuilder.append("ID: " + uniqueID + '\n' +
                       "Name: " + name + '\n' +
                       "Manufacturer: " + manufacturer.getName() + '\n');
-        if (price != 0)
+        if (price != 0) {
             stringBuilder.append("Price: " + String.format("%.2f", price) + '\n');
+            if (discount != null && discount.getLastDateApplied() != null)
+                stringBuilder.append("Discounted on " + discount.getLastDateApplied().toString() + '\n');
+        }
         else
             stringBuilder.append("Price not Available\n");
         if (quantity != 0)
@@ -86,5 +91,13 @@ public class Product {
         else
             stringBuilder.append("Out of Stock!\n");
         return stringBuilder.toString();
+    }
+
+    public void writeBin(BinaryOutputStream writer) throws IOException {
+        writer.write(uniqueID);
+        writer.write(name);
+        writer.write(manufacturer.getName());
+        writer.write(price);
+        writer.write(quantity);
     }
 }

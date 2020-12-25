@@ -1,10 +1,16 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
+
+enum DiscountType {
+    PERCENTAGE_DISCOUNT,
+    FIXED_DISCOUNT
+}
 
 public class Discount {
     private String name;
     private DiscountType discountType;
     private double value;
-    private LocalDateTime lastDateApplied = null;
+    private LocalDateTime lastDateApplied;
 
     public Discount() {
     }
@@ -13,6 +19,7 @@ public class Discount {
         this.name = name;
         this.discountType = discountType;
         this.value = value;
+        lastDateApplied = null;
     }
 
     public DiscountType getType() {
@@ -21,6 +28,10 @@ public class Discount {
 
     public double getValue() {
         return value;
+    }
+
+    public LocalDateTime getLastDateApplied() {
+        return lastDateApplied;
     }
 
     public void setAsAppliedNow() {

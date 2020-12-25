@@ -1,3 +1,5 @@
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Currency {
@@ -71,5 +73,11 @@ public class Currency {
 
     public String toString() {
         return "Currency " + name + '(' + symbol + ')';
+    }
+
+    public void writeBin(BinaryOutputStream writer) throws IOException {
+        writer.write(name);
+        writer.write(symbol);
+        writer.write(parityToEur);
     }
 }

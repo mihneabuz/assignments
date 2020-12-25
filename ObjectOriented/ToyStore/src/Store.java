@@ -1,4 +1,4 @@
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Store {
@@ -39,12 +39,18 @@ public class Store {
     }
 
     public void readProducts() {
+        if (productReader == null) {
+            System.out.println("No file loaded");
+            return;
+        }
         ArrayList<String> productFields = productReader.readNext();
-        if (productFields == null || productReader == null) {
+        if (productFields == null) {
             System.out.println("Could not read product");
             return;
         }
         String ID = productFields.get(0);
+        if (!checkUniqueID(ID))
+            return;
         String name = productFields.get(1);
         Manufacturer manufacturer = getManufacturer(productFields.get(2));
         double price;
@@ -60,24 +66,19 @@ public class Store {
                 .withQuantity(quantity)
                 .build();
 
-        try {
-            addProduct(newProduct);
-        }
-        catch (DuplicateProductException e) {
-            System.out.println(e.toString());
-        }
+        products.add(newProduct);
     }
 
-    public boolean checkUniqueID(String newID) {
+    private boolean checkUniqueID(String newID) {
         for (Product product : products)
             if (product.getID().equals(newID))
                 return false;
         return true;
     }
 
-    public boolean checkUniqueManufacturer(String newManufacturer) {
+    private boolean checkUniqueManufacturer(String manufacturerName) {
         for (Manufacturer manufacturer : manufacturers)
-            if (manufacturer.getName().equals(newManufacturer))
+            if (manufacturer.getName().equals(manufacturerName))
                 return false;
         return true;
     }
@@ -170,6 +171,17 @@ public class Store {
         for (Product product : products)
             total += product.getPrice() * product.getQuantity();
         return total;
+    }
+
+    public void saveStore(String filename) throws IOException {
+        BinaryOutputStream writer = new BinaryOutputStream(new BufferedOutputStream(
+                                        new FileOutputStream(new File(filename))));
+        writer.write(name);
+        currency.writeBin(writer);
+        writer.write(products.size());
+        for (int i = 0; i < products.size(); i++)
+            products.get(i).writeBin(writer);
+        writer.close();
     }
 
     public void printInventory() {
