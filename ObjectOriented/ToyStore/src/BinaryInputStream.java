@@ -16,7 +16,7 @@ public class BinaryInputStream {
         int len = reader.read();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < len; i ++) {
-            stringBuilder.append(reader.readNBytes(1).toString());
+            stringBuilder.append(new String(reader.readNBytes(1)));
         }
         return stringBuilder.toString();
     }
