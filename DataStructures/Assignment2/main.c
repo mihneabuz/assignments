@@ -16,7 +16,7 @@
 
 void PrintOpenTabs(char *x, int ind, FILE *out) {
 	//formatul de printare pentru print_open_tabs
-	fprintf (out, "(%d: %s)\n", ind, x);
+	fprintf(out, "(%d: %s)\n", ind, x);
 }
 
 void PrintHistoryURL(void *x, FILE *out) {

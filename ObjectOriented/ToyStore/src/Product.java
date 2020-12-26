@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 public class Product {
     private String uniqueID;
@@ -76,13 +77,15 @@ public class Product {
 
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("ID: " + uniqueID + '\n' +
-                      "Name: " + name + '\n' +
-                      "Manufacturer: " + manufacturer.getName() + '\n');
+        stringBuilder.append("ID: " + uniqueID +
+                             "\nName: " + name +
+                             "\nManufacturer: " + manufacturer.getName() + '\n');
         if (price != 0) {
             stringBuilder.append("Price: " + String.format("%.2f", price) + '\n');
             if (discount != null && discount.getLastDateApplied() != null)
-                stringBuilder.append("Discounted on " + discount.getLastDateApplied().toString() + '\n');
+                stringBuilder.append("Discounted on " +
+                        discount.getLastDateApplied().format(
+                                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + '\n');
         }
         else
             stringBuilder.append("Price not Available\n");

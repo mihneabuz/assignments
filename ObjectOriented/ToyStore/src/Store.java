@@ -43,30 +43,20 @@ public class Store {
             System.out.println("No file loaded");
             return;
         }
-        ArrayList<String> productFields = productReader.readNext();
-        if (productFields == null) {
-            System.out.println("Could not read product");
+        Product newProduct;
+        try {
+            newProduct = productReader.readNext();
+        }
+        catch (Exception e) {
+            System.out.println(e.toString());
             return;
         }
-        String ID = productFields.get(0);
-        if (!checkUniqueID(ID))
-            return;
-        String name = productFields.get(1);
-        Manufacturer manufacturer = getManufacturer(productFields.get(2));
-        double price;
-        try { price = Currency.convert(productFields.get(3), currency); }
-        catch (NegativePriceException e) { price = 0f; }
-        int quantity = Integer.parseInt(productFields.get(4));
-
-        Product newProduct = new ProductBuilder()
-                .withID(ID)
-                .withName(name)
-                .withManufacturer(manufacturer)
-                .withPrice(price)
-                .withQuantity(quantity)
-                .build();
-
-        products.add(newProduct);
+        try {
+            addProduct(newProduct);
+        }
+        catch (DuplicateProductException e) {
+            System.out.println(e.toString());
+        }
     }
 
     private boolean checkUniqueID(String newID) {
@@ -83,17 +73,15 @@ public class Store {
         return true;
     }
 
-    public Manufacturer getManufacturer(String manufacturerName) {
-        for (Manufacturer manufacturer : manufacturers) {
-            if (manufacturer.getName().equals(manufacturerName)) {
-                manufacturer.incCount();
+    public Manufacturer findManufacturer(Manufacturer manufacturer) {
+        return findManufacturer(manufacturer.getName());
+    }
+
+    public Manufacturer findManufacturer(String manufacturerName) {
+        for (Manufacturer manufacturer : manufacturers)
+            if (manufacturer.getName().equals(manufacturerName))
                 return manufacturer;
-            }
-        }
-        Manufacturer newManufacturer = new Manufacturer(manufacturerName);
-        newManufacturer.incCount();
-        manufacturers.add(newManufacturer);
-        return newManufacturer;
+        return null;
     }
 
     public ArrayList<Product> getProductsByManufacturer(Manufacturer manufacturer) throws ManufacturerNotFoundException {
@@ -120,6 +108,19 @@ public class Store {
     public void addProduct(Product product) throws DuplicateProductException {
         if (!checkUniqueID(product.getID()))
             throw new DuplicateProductException("Duplicate product found. ID not unique");
+        try {
+            addManufacturer(product.getManufacturer());
+        }
+        catch (DuplicateManufacturerException e) {
+            product.setManufacturer(findManufacturer(product.getManufacturer()));
+        }
+        product.getManufacturer().incCount();
+        try {
+            product.setPrice(Currency.convert(product.getPrice(), Currency.getDefaultCurrency(), currency));
+        }
+        catch (NegativePriceException e) {
+            product.setPrice(0f);
+        }
         this.products.add(product);
     }
 
@@ -179,8 +180,8 @@ public class Store {
         writer.write(name);
         currency.writeBin(writer);
         writer.write(products.size());
-        for (int i = 0; i < products.size(); i++)
-            products.get(i).writeBin(writer);
+        for (Product product : products)
+            product.writeBin(writer);
         writer.close();
     }
 

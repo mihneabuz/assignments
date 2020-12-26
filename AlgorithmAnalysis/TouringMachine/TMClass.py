@@ -88,8 +88,7 @@ class TouringMachine:
 
 
     def simulate_step(self, config):
-        trans = self.transitions[config[1]][
-                                config[2][0]]
+        trans = self.transitions[config[1]][config[2][0]]
 
         if (trans == 0):
             return False

@@ -16,18 +16,13 @@ public class BinaryInputStream {
         int len = reader.read();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < len; i ++) {
-            stringBuilder.append(reader.readNBytes(1));
+            stringBuilder.append(reader.readNBytes(1).toString());
         }
         return stringBuilder.toString();
     }
 
     public double readDouble() throws IOException {
-        int len = reader.read();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < len; i ++) {
-            stringBuilder.append(reader.readNBytes(1));
-        }
-        return Double.parseDouble(stringBuilder.toString());
+        return Double.parseDouble(readString());
     }
 
     public void close() throws IOException {

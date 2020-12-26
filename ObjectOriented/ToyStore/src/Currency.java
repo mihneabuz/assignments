@@ -15,7 +15,7 @@ public class Currency {
         currencies.add(new Currency("Leu", "L", 0.2f));
     }
 
-    public static double convert(String string, Currency newCurrency) throws NegativePriceException {
+    public static double convert(String string, Currency newCurrency) throws NegativePriceException, NumberFormatException {
         String symbol = string.substring(0, 1);
         double value = Double.parseDouble(string.substring(1));
         Currency oldCurrency;
@@ -43,6 +43,10 @@ public class Currency {
             }
         }
         throw new CurrencyNotFoundException("Currency: '" + symbol + "' not found");
+    }
+
+    public static Currency getDefaultCurrency() {
+        return currencies.get(0);
     }
 
     public Currency() {

@@ -1,10 +1,8 @@
 import com.opencsv.CSVReader;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class ProductReader {
     private final CSVReader csvreader;
@@ -25,41 +23,40 @@ public class ProductReader {
         }
     }
 
-    public ArrayList<String> readNext() {
+    public Product readNext() throws IOException, InvalidProductException{
         String[] fields;
         try {
             fields = csvreader.readNext();
         }
         catch (Exception e) {
-            return null;
+            throw new IOException("CSV reader failed");
         }
         try {
-            ArrayList<String> productFields = new ArrayList<>(5);
-            productFields.add(fields[0]);
-            productFields.add(fields[1]);
-            productFields.add(fields[2]);
-            productFields.add(fields[3].isEmpty() ? "0" : fields[3]);
-            productFields.add(fields[4].isEmpty() ? "0" : fields[4].split(" ")[0]);
+            String ID = fields[0];
+            String name = fields[1];
+            String manufacturerName = fields[2];
+            double price;
+            int quantity = 0;
             try {
-                Integer.parseInt(productFields.get(4));
-                Double.parseDouble(productFields.get(3).substring(1));
+                quantity = Integer.parseInt(fields[4].isEmpty() ? "0" : fields[4].split(" ")[0]);
+                price = Currency.convert(fields[3].isEmpty() ? "€0" : fields[3], Currency.getDefaultCurrency());
             }
             catch (NumberFormatException e) {
-                return null;
+                throw new InvalidProductException("Cannot parse price/quantity");
             }
-            return productFields;
+            catch (NegativePriceException e) {
+                price = 0f;
+            }
+            return new ProductBuilder()
+                    .withID(ID)
+                    .withName(name)
+                    .withManufacturer(new Manufacturer(manufacturerName))
+                    .withPrice(price)
+                    .withQuantity(quantity)
+                    .build();
         }
         catch (ArrayIndexOutOfBoundsException e) {
-            return null;
+            throw new InvalidProductException("Not enough fields");
         }
     }
-
-    public void close() {
-        try {
-            csvreader.close();
-        }
-        catch (IOException e){
-        }
-    }
-
 }
