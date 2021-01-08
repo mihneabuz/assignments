@@ -24,14 +24,14 @@ pe care consider ca l-am reusit. Multe metode sunt suprascrise pentru a le face 
 Un lucru cu care nu sunt complet multumit este aruncarea si tratarea exceptiilor, care este cam inconsistenta.
 
 Design Pattern folosite:
-    - Singleton in Store
-    - Builder in ProductBuilder
-    - Adapter in ProductReader
+ - Singleton in Store
+ - Builder in ProductBuilder
+ - Adapter in ProductReader
 
 Pentru Bonus:
-Mentionez ca am folosit libraria OpenCSV pentru a citii fisierul de intrare.
-De asemenea, am scris un Adapter, "ProductReader" peste clasa CSVReader, care se ocupa de citirea. Astfel am mutat logica
+ - Mentionez ca am folosit libraria OpenCSV pentru a citii fisierul de intrare.
+ - De asemenea, am scris un Adapter, "ProductReader" peste clasa CSVReader, care se ocupa de citirea. Astfel am mutat logica
 urata de parsare al intrarilor din csv intr-o clasa separata.
-Am implementat si functionalitate de save/load (mentionez ca am redenumit comenzile in "savestate" si "loadstate" pentru
+ - Am implementat si functionalitate de save/load (mentionez ca am redenumit comenzile in "savestate" si "loadstate" pentru
 a fi mai usor diferentiate de cele pentru fisier csv) folosind doua wrappere pe care le-am scris peste OutputStream si
 InputStream dar si pachetul ByteBuffer.
