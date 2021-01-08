@@ -7,6 +7,7 @@ public class Store {
     private Currency currency;
     private final ArrayList<Product> products = new ArrayList<>();
     private final ArrayList<Manufacturer> manufacturers = new ArrayList<>();
+    private final ArrayList<Discount> discounts = new ArrayList<>();
     private ProductReader productReader;
 
     private Store() {
@@ -23,6 +24,14 @@ public class Store {
         this.currency = currency;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
     public void readFrom(String filename) {
         try {
             productReader = new ProductReader(filename);
@@ -33,15 +42,24 @@ public class Store {
         }
     }
 
-    public void readProducts(int count) {
-        for (int i = 0; i < count; i++)
-            readProducts();
+    public int readAllProducts() {
+        int i = 0;
+        while(readProduct()) {
+            i++;
+        }
+        return i;
     }
 
-    public void readProducts() {
+    public void readProducts(int count) {
+        for (int i = 0; i < count; i++)
+            if(!readProduct())
+                break;
+    }
+
+    public boolean readProduct() {
         if (productReader == null) {
             System.out.println("No file loaded");
-            return;
+            return false;
         }
         Product newProduct;
         try {
@@ -49,14 +67,24 @@ public class Store {
         }
         catch (Exception e) {
             System.out.println(e.toString());
-            return;
+            return false;
         }
+        if (newProduct == null)
+            return false;
         try {
-            addProduct(newProduct);
+            addProduct(newProduct, true);
         }
         catch (DuplicateProductException e) {
             System.out.println(e.toString());
         }
+        return true;
+    }
+
+    public void saveToCsv(String filename) throws FileNotFoundException{
+        PrintWriter output = new PrintWriter(new FileOutputStream(new File(filename)));
+        for (Product product : products)
+            output.print(product.compressed(currency.getSymbol()));
+        output.close();
     }
 
     private boolean checkUniqueID(String newID) {
@@ -105,7 +133,7 @@ public class Store {
         return aux;
     }
 
-    public void addProduct(Product product) throws DuplicateProductException {
+    public void addProduct(Product product, boolean needsConversion) throws DuplicateProductException {
         if (!checkUniqueID(product.getID()))
             throw new DuplicateProductException("Duplicate product found. ID not unique");
         try {
@@ -115,13 +143,23 @@ public class Store {
             product.setManufacturer(findManufacturer(product.getManufacturer()));
         }
         product.getManufacturer().incCount();
-        try {
-            product.setPrice(Currency.convert(product.getPrice(), Currency.getDefaultCurrency(), currency));
-        }
-        catch (NegativePriceException e) {
-            product.setPrice(0f);
-        }
+        if (needsConversion)
+            try {
+                product.setPrice(Currency.convert(product.getPrice(), Currency.getDefaultCurrency(), currency));
+            }
+            catch (NegativePriceException e) {
+                product.setPrice(0f);
+            }
         this.products.add(product);
+    }
+
+    public Product getProduct(String ID) throws ProductNotFoundException{
+        for (Product product : products) {
+            if (product.getID().equals(ID)) {
+                return product;
+            }
+        }
+        throw new ProductNotFoundException("Product " + ID + " not found.");
     }
 
     public void addManufacturer(Manufacturer manufacturer) throws DuplicateManufacturerException {
@@ -130,8 +168,8 @@ public class Store {
         this.manufacturers.add(manufacturer);
     }
 
-    public void changeCurrency(String symbol) throws CurrencyNotFoundException{
-        Currency newCurrency = Currency.getCurrency(symbol);
+    public void changeCurrency(String name) throws CurrencyNotFoundException{
+        Currency newCurrency = Currency.getCurrency(name);
         changeCurrency(newCurrency);
     }
 
@@ -147,6 +185,17 @@ public class Store {
         currency = newCurrency;
     }
 
+    public void addDiscount(Discount discount) {
+        discounts.add(discount);
+    }
+    
+    public Discount getDiscount(DiscountType type, double value) throws DiscountNotFoundException {
+        for (Discount discount : discounts)
+            if (discount.getType().equals(type) && discount.getValue() == value)
+                return discount;
+        throw new DiscountNotFoundException("Discount of " + value + " " + type.toString() + " not found.");
+    }
+    
     public void applyDiscounts(Discount discount) {
         applyDiscounts(discount, products);
     }
@@ -163,6 +212,12 @@ public class Store {
         discount.setAsAppliedNow();
     }
 
+    public void printDiscounts() {
+        System.out.println("Discounts: " + discounts.size());
+        for (Discount discount : discounts)
+            System.out.println(discount.toString());
+    }
+
     public double calculateTotal() {
         return calculateTotal(products);
     }
@@ -174,7 +229,7 @@ public class Store {
         return total;
     }
 
-    public void saveStore(String filename) throws IOException {
+    public void saveState(String filename) throws IOException {
         BinaryOutputStream writer = new BinaryOutputStream(new BufferedOutputStream(
                                         new FileOutputStream(new File(filename))));
         writer.write(name);
@@ -183,6 +238,40 @@ public class Store {
         for (Product product : products)
             product.writeBin(writer);
         writer.close();
+    }
+
+    public void loadState(String filename) throws IOException {
+        BinaryInputStream reader = new BinaryInputStream(new BufferedInputStream(
+                new FileInputStream(new File(filename))));
+        products.clear();
+        manufacturers.clear();
+        discounts.clear();
+        this.setName(reader.readString());
+        String currencyName = reader.readString();
+        String currencySymbol = String.valueOf(reader.readChar());
+        double currencyParity = reader.readDouble();
+        changeCurrency(new Currency(currencyName, currencySymbol, currencyParity));
+        int nrProducts = reader.readInt();
+        for (int i = 0; i < nrProducts; i++) {
+            String productID = reader.readString();
+            String productName = reader.readString();
+            String productManufacturerName = reader.readString();
+            double productPrice = reader.readDouble();
+            int productQuantity = reader.readInt();
+            try {
+                addProduct(new ProductBuilder()
+                        .withID(productID)
+                        .withName(productName)
+                        .withManufacturer(new Manufacturer(productManufacturerName))
+                        .withPrice(productPrice)
+                        .withQuantity(productQuantity)
+                        .build()
+                        , false);
+            }
+            catch (DuplicateProductException e) { //this should never happen
+            }
+        }
+        reader.close();
     }
 
     public void printInventory() {

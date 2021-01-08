@@ -1,4 +1,3 @@
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -9,10 +8,10 @@ public class Currency {
     private double parityToEur;
 
     static {
-        currencies.add(new Currency("Euro", "€", 1.0f));
-        currencies.add(new Currency("Pound", "£", 1.09f));
-        currencies.add(new Currency("Dollar", "$", 0.82f));
-        currencies.add(new Currency("Leu", "L", 0.2f));
+        new Currency("EUR", "€", 1.0f);
+        new Currency("GBP", "£", 1.09f);
+        new Currency("USD", "$", 0.82f);
+        new Currency("RON", "L", 0.2f);
     }
 
     public static double convert(String string, Currency newCurrency) throws NegativePriceException, NumberFormatException {
@@ -20,7 +19,7 @@ public class Currency {
         double value = Double.parseDouble(string.substring(1));
         Currency oldCurrency;
         try {
-             oldCurrency = getCurrency(symbol);
+             oldCurrency = getCurrencyBySymbol(symbol);
         }
         catch (CurrencyNotFoundException e) {
             System.out.println(e.toString());
@@ -36,13 +35,38 @@ public class Currency {
         return value;
     }
 
-    public static Currency getCurrency(String symbol) throws CurrencyNotFoundException {
+    public static Currency getCurrency(String name) throws CurrencyNotFoundException {
+        for (Currency currency : currencies) {
+            if (currency.getName().equals(name)) {
+                return currency;
+            }
+        }
+        throw new CurrencyNotFoundException("Currency: '" + name + "' not found");
+    }
+
+    public static Currency getCurrencyBySymbol(String symbol) throws CurrencyNotFoundException {
         for (Currency currency : currencies) {
             if (currency.getSymbol().equals(symbol)) {
                 return currency;
             }
         }
         throw new CurrencyNotFoundException("Currency: '" + symbol + "' not found");
+    }
+
+    public static void addCurrency(Currency currency) {
+        try {
+            Currency old = getCurrency(currency.getName());
+            old.updateParity(currency.getParityToEur());
+        }
+        catch (CurrencyNotFoundException e) {
+            currencies.add(currency);
+        }
+    }
+
+    public static void printCurrencies() {
+        for (Currency currency : currencies) {
+            System.out.println(currency.toString());
+        }
     }
 
     public static Currency getDefaultCurrency() {
@@ -56,7 +80,7 @@ public class Currency {
         this.name = name;
         this.symbol = symbol;
         this.parityToEur = parityToEur;
-        currencies.add(this);
+        addCurrency(this);
     }
 
     public void updateParity(double parityToEur) {
@@ -76,12 +100,12 @@ public class Currency {
     }
 
     public String toString() {
-        return "Currency " + name + '(' + symbol + ')';
+        return "Currency " + name + '(' + symbol + ") " + String.format("%.2f", parityToEur);
     }
 
     public void writeBin(BinaryOutputStream writer) throws IOException {
         writer.write(name);
-        writer.write(symbol);
+        writer.write(symbol.charAt(0));
         writer.write(parityToEur);
     }
 }

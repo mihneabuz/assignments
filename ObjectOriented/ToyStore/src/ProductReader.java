@@ -27,6 +27,8 @@ public class ProductReader {
         String[] fields;
         try {
             fields = csvreader.readNext();
+            if (fields == null)
+                return null;
         }
         catch (Exception e) {
             throw new IOException("CSV reader failed");
@@ -39,7 +41,8 @@ public class ProductReader {
             int quantity = 0;
             try {
                 quantity = Integer.parseInt(fields[4].isEmpty() ? "0" : fields[4].split(" ")[0]);
-                price = Currency.convert(fields[3].isEmpty() ? "€0" : fields[3], Currency.getDefaultCurrency());
+                price = Currency.convert(fields[3].isEmpty() ? "€0" : fields[3].split(" ")[0].replaceAll(",", ""),
+                                         Currency.getDefaultCurrency());
             }
             catch (NumberFormatException e) {
                 throw new InvalidProductException("Cannot parse price/quantity");

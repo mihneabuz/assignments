@@ -1,40 +1,21 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
+        Operator operator = new Operator();
         Store store = Store.getInstance();
         try {
-            store.init("Scule Bune", Currency.getCurrency("$"));
+            store.init("Scule Bune", Currency.getCurrency("EUR"));
         }
         catch (CurrencyNotFoundException e) {
             System.out.println(e.toString());
             return;
         }
-
-        store.readFrom("amazon_co-ecommerce_sample.csv");
-        store.readProducts(10);
-        store.changeCurrency(new Currency("LeiGrei", "G", 0.4f));
-        System.out.println(store.toString());
-
-
-        try {
-            System.out.println("Total by Hornby: " +
-                    store.calculateTotal(store.getProductsByManufacturer("Hornby")) + "\n");
+        operator.setStore(store);
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+        while(operator.command(command)) {
+            command = scanner.nextLine();
         }
-        catch (Exception e){
-            System.out.println("nu");
-        }
-
-        store.applyDiscounts(new Discount("Reduceri Craciun", DiscountType.FIXED_DISCOUNT, 10));
-        System.out.println(store.toString());
-        store.printInventory();
-        store.printManufacturerList();
-
-        try {
-            store.saveStore("data");
-        }
-        catch (Exception e) {
-            System.out.println("nu mere ba " + e.toString());
-        }
-
-
     }
 }

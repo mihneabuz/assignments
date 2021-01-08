@@ -75,22 +75,24 @@ public class Product {
         }
     }
 
+    public String compressed(String currencySymbol) {
+        return uniqueID + ",\"" + name + "\",\"" + manufacturer.getName() + "\"," + currencySymbol + price + "," + quantity + '\n';
+    }
+
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("ID: " + uniqueID +
-                             "\nName: " + name +
-                             "\nManufacturer: " + manufacturer.getName() + '\n');
+        stringBuilder.append("ID: ").append(uniqueID).append("\nName: ").append(name).append("\nManufacturer: ")
+                     .append(manufacturer.getName()).append('\n');
         if (price != 0) {
-            stringBuilder.append("Price: " + String.format("%.2f", price) + '\n');
+            stringBuilder.append("Price: ").append(String.format("%.2f", price)).append('\n');
             if (discount != null && discount.getLastDateApplied() != null)
-                stringBuilder.append("Discounted on " +
-                        discount.getLastDateApplied().format(
-                                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + '\n');
+                stringBuilder.append("Discounted on ").append(discount.getLastDateApplied().format(
+                        DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))).append('\n');
         }
         else
             stringBuilder.append("Price not Available\n");
         if (quantity != 0)
-            stringBuilder.append("Stock: " + quantity + '\n');
+            stringBuilder.append("Stock: ").append(quantity).append('\n');
         else
             stringBuilder.append("Out of Stock!\n");
         return stringBuilder.toString();
