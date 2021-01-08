@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-
+/** wrapper over OutputStream to handle writing binary files **/
 public class BinaryOutputStream {
     private final OutputStream writer;
 

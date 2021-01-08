@@ -1,0 +1,37 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+Datorita lipsei checkerului, mi-am luat libertatea de a modifica putin modelarea programului.
+    Principala diferenta este modul in care am tratat Currency-urile. Consider ca nu are sens, din punct de vedere al
+logicii si al modelarii OOP, ca clasa Store sa aiba o lista de Currency, asa ca am mutat aceasta fucntionalitate in clasa
+Currency. Mai exact, clasa Currency va retine o lista statica de Currency-uri intiale prestabilite si toate celelate
+Currency care sunt create pe parcursul rularii programului.
+    Astfel am adaugat clasei Currency o functionalitate statica de currency conversion si am mutat o parte considerabila
+din logica clasei Store.
+    O alta diferenta este tratarea cazurilor cand produsul nu are pret in fisierul de intrare. In acest caz il consider
+un caz special, cu pret 0, deoarece implementasem deja tratarea acestui caz cand a fost anuntat ca trebuie ignorate.
+    Acelasi caz special este folosit si cand un produs ajunge cu pret negativ in urma unui Discount, iar la afisarea
+produselor apare "Price not available".
+    In legatura cu citirea, am sters din fisierul de intrare toate caracterele '\' deoarece erau considerate escape char
+si cauzau probleme cu OpenCVS. Am considerat ca nu este necesar sa scriu o metoda care sa se ocupe de asta datorita
+dimensiunii mari a fisierului, (era costisitor sa fac asta la fiecare rulare).
+    De asemenea, implementarea mea pentru commanda "readproducts" poate citii 1, n, sau toate intrarile din fisierul csv.
+    Inputul "consolei" l-am parsat cu regex ca sa permita scrierea argumentelor in ghilimele "" (util daca contin spatii).
+
+In tema aceasta am incercat sa ma concentrez mai mult asupra lizibilitatii codului si sa il fac cat mai intuitiv, lucru
+pe care consider ca l-am reusit. Multe metode sunt suprascrise pentru a le face cat mai intuitive.
+(Ex getProductsByManufacturer poate primii atat un Manufacturer cat si un String manufacturerName)
+Un lucru cu care nu sunt complet multumit este aruncarea si tratarea exceptiilor, care este cam inconsistenta.
+
+Design Pattern folosite:
+    - Singleton in Store
+    - Builder in ProductBuilder
+    - Adapter in ProductReader
+
+Pentru Bonus:
+Mentionez ca am folosit libraria OpenCSV pentru a citii fisierul de intrare.
+De asemenea, am scris un Adapter, "ProductReader" peste clasa CSVReader, care se ocupa de citirea. Astfel am mutat logica
+urata de parsare al intrarilor din csv intr-o clasa separata.
+Am implementat si functionalitate de save/load (mentionez ca am redenumit comenzile in "savestate" si "loadstate" pentru
+a fi mai usor diferentiate de cele pentru fisier csv) folosind doua wrappere pe care le-am scris peste OutputStream si
+InputStream dar si pachetul ByteBuffer.

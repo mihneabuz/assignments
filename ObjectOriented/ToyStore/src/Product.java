@@ -75,10 +75,12 @@ public class Product {
         }
     }
 
+    /** returns a comma separated line of the product attributes **/
     public String compressed(String currencySymbol) {
         return uniqueID + ",\"" + name + "\",\"" + manufacturer.getName() + "\"," + currencySymbol + price + "," + quantity + '\n';
     }
 
+    /** returns a verbose String with the product attributes **/
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("ID: ").append(uniqueID).append("\nName: ").append(name).append("\nManufacturer: ")
@@ -98,6 +100,7 @@ public class Product {
         return stringBuilder.toString();
     }
 
+    /** writes information to a binary file **/
     public void writeBin(BinaryOutputStream writer) throws IOException {
         writer.write(uniqueID);
         writer.write(name);

@@ -7,6 +7,7 @@ public class Currency {
     private String symbol;
     private double parityToEur;
 
+    /** inital entries of the static Currency list, first entry considered default Currency **/
     static {
         new Currency("EUR", "€", 1.0f);
         new Currency("GBP", "£", 1.09f);
@@ -14,6 +15,7 @@ public class Currency {
         new Currency("RON", "L", 0.2f);
     }
 
+    /** converts a string of type "[symbol][value]" into a value of newCurrency **/
     public static double convert(String string, Currency newCurrency) throws NegativePriceException, NumberFormatException {
         String symbol = string.substring(0, 1);
         double value = Double.parseDouble(string.substring(1));
@@ -28,6 +30,7 @@ public class Currency {
         return convert(value, oldCurrency, newCurrency);
     }
 
+    /** converts value from oldCurrency to newCurrency **/
     public static double convert(double value, Currency oldCurrency, Currency newCurrency) throws NegativePriceException {
         value = value * oldCurrency.getParityToEur() / newCurrency.getParityToEur();
         if (value < 0)
@@ -35,6 +38,7 @@ public class Currency {
         return value;
     }
 
+    /** returns Currency with name **/
     public static Currency getCurrency(String name) throws CurrencyNotFoundException {
         for (Currency currency : currencies) {
             if (currency.getName().equals(name)) {
@@ -44,6 +48,7 @@ public class Currency {
         throw new CurrencyNotFoundException("Currency: '" + name + "' not found");
     }
 
+    /** returns Currency with symbol **/
     public static Currency getCurrencyBySymbol(String symbol) throws CurrencyNotFoundException {
         for (Currency currency : currencies) {
             if (currency.getSymbol().equals(symbol)) {
@@ -53,6 +58,7 @@ public class Currency {
         throw new CurrencyNotFoundException("Currency: '" + symbol + "' not found");
     }
 
+    /** adds a new Currency to the static list. If it exists already, update the parity **/
     public static void addCurrency(Currency currency) {
         try {
             Currency old = getCurrency(currency.getName());
@@ -63,12 +69,14 @@ public class Currency {
         }
     }
 
+    /** prints the list of currencies **/
     public static void printCurrencies() {
         for (Currency currency : currencies) {
             System.out.println(currency.toString());
         }
     }
 
+    /** returns default currency **/
     public static Currency getDefaultCurrency() {
         return currencies.get(0);
     }
@@ -103,6 +111,7 @@ public class Currency {
         return "Currency " + name + '(' + symbol + ") " + String.format("%.2f", parityToEur);
     }
 
+    /** writes information to binary writer **/
     public void writeBin(BinaryOutputStream writer) throws IOException {
         writer.write(name);
         writer.write(symbol.charAt(0));
