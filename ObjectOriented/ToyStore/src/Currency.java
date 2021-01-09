@@ -7,7 +7,7 @@ public class Currency {
     private String symbol;
     private double parityToEur;
 
-    /** inital entries of the static Currency list, first entry considered default Currency **/
+    /* inital entries of the static Currency list, first entry considered default Currency */
     static {
         new Currency("EUR", "€", 1.0f);
         new Currency("GBP", "£", 1.09f);
@@ -15,7 +15,7 @@ public class Currency {
         new Currency("RON", "L", 0.2f);
     }
 
-    /** converts a string of type "[symbol][value]" into a value of newCurrency **/
+    /** converts a string of type "(symbol)(value)" into a value of newCurrency **/
     public static double convert(String string, Currency newCurrency) throws NegativePriceException, NumberFormatException {
         String symbol = string.substring(0, 1);
         double value = Double.parseDouble(string.substring(1));
