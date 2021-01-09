@@ -5,7 +5,7 @@ public class Main {
         Operator operator = new Operator();
         Store store = Store.getInstance();
         try {
-            store.init("Scule Bune", Currency.getCurrency("EUR"));
+            store.init("Cool Toys (tm)", Currency.getCurrency("EUR"));
         }
         catch (CurrencyNotFoundException e) {
             System.out.println(e.toString());

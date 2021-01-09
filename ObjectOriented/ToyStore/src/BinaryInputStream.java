@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 /** wrapper over InputStream to handle reading binary files **/
 public class BinaryInputStream {
@@ -20,7 +21,7 @@ public class BinaryInputStream {
         int len = readInt();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < len; i ++) {
-            stringBuilder.append(new String(reader.readNBytes(2)));
+            stringBuilder.append(readChar());
         }
         return stringBuilder.toString();
     }

@@ -114,7 +114,7 @@ public class Currency {
     /** writes information to binary writer **/
     public void writeBin(BinaryOutputStream writer) throws IOException {
         writer.write(name);
-        writer.write(symbol.charAt(0));
+        writer.write(symbol);
         writer.write(parityToEur);
     }
 }

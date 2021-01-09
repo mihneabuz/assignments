@@ -266,7 +266,7 @@ public class Store {
         discounts.clear();
         this.setName(reader.readString());
         String currencyName = reader.readString();
-        String currencySymbol = String.valueOf(reader.readChar());
+        String currencySymbol = reader.readString();
         double currencyParity = reader.readDouble();
         changeCurrency(new Currency(currencyName, currencySymbol, currencyParity));
         int nrProducts = reader.readInt();

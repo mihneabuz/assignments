@@ -135,7 +135,7 @@ public class Operator {
                 Currency.printCurrencies();
                 break;
             case "updateparity":
-                if (arguments.size() < 1) {
+                if (arguments.size() < 2) {
                     System.out.println("not enough arguments");
                     return true;
                 }
