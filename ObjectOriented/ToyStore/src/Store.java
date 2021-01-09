@@ -221,15 +221,18 @@ public class Store {
 
     /** applies discount to every product in list products **/
     public void applyDiscounts(Discount discount, ArrayList<Product> products) {
+        boolean invalidPrices = false;
         for (Product product : products) {
             try {
                 product.applyDiscount(discount);
             }
             catch (NegativePriceException e) {
-                System.out.println(e.toString());
+                invalidPrices = true;
             }
         }
         discount.setAsAppliedNow();
+        if (invalidPrices)
+            System.out.println("Warning: Some products had negative price after discount!");
     }
 
     /** returns total value of all products in store **/

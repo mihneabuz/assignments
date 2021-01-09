@@ -1,7 +1,7 @@
 Buzatu-Pahontu Mihnea-Nicolae
 324CB
 
-Datorita lipsei checkerului, mi-am luat libertatea de a modifica putin modelarea programului.
+Datorita lipsei checkerului, mi-am permis libertatea de a modifica putin modelarea programului.
     Principala diferenta este modul in care am tratat Currency-urile. Consider ca nu are sens, din punct de vedere al
 logicii si al modelarii OOP, ca clasa Store sa aiba o lista de Currency, asa ca am mutat aceasta fucntionalitate in clasa
 Currency. Mai exact, clasa Currency va retine o lista statica de Currency-uri intiale prestabilite si toate celelate
@@ -15,7 +15,8 @@ produselor apare "Price not available".
     In legatura cu citirea, am sters din fisierul de intrare toate caracterele '\' deoarece erau considerate escape char
 si cauzau probleme cu OpenCVS. Am considerat ca nu este necesar sa scriu o metoda care sa se ocupe de asta datorita
 dimensiunii mari a fisierului, (era costisitor sa fac asta la fiecare rulare).
-    De asemenea, implementarea mea pentru commanda "readproducts" poate citii 1, n, sau toate intrarile din fisierul csv.
+    De asemenea, am adaugat 2 comenzi noi: "storeinfo" care afiseaza numele, Currency si valoarea totala; "readproducts"
+care primeste un numar n sau cuvantul "all" ca argument si citeste n sau toate intrarile din csv.
     Inputul "consolei" l-am parsat cu regex ca sa permita scrierea argumentelor in ghilimele "" (util daca contin spatii).
 
 In tema aceasta am incercat sa ma concentrez mai mult asupra lizibilitatii codului si sa il fac cat mai intuitiv, lucru
@@ -35,3 +36,12 @@ urata de parsare al intrarilor din csv intr-o clasa separata.
  - Am implementat si functionalitate de save/load (mentionez ca am redenumit comenzile in "savestate" si "loadstate" pentru
 a fi mai usor diferentiate de cele pentru fisier csv) folosind doua wrappere pe care le-am scris peste OutputStream si
 InputStream dar si pachetul ByteBuffer.
+
+Fisierele de test:
+- input1.txt - Currency si Discount methods demo
+- input2.txt - savestate si loadstate demo
+- input3.txt - Store methods demo pe 5 produse
+- input4.txt - Store methods demo pe toate produsele
+- input5.txt - Toate
+Obs. comenzile au cate un ">" la inceput, iar outputurile lungi (listproducts) au fost scurtate manual
+Obs. unele fisiere au typo-uri mai ales in jurul ghilimelelor datorita terminalului din Intellij

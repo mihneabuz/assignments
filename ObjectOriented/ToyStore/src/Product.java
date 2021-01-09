@@ -63,6 +63,8 @@ public class Product {
 
     public void applyDiscount(Discount discount) throws NegativePriceException {
         this.discount = discount;
+        if (price == 0)
+            return;
         if (discount.getType() == DiscountType.PERCENTAGE_DISCOUNT) {
             price = price * (100 - discount.getValue()) / 100;
         }
@@ -77,7 +79,8 @@ public class Product {
 
     /** returns a comma separated line of the product attributes **/
     public String compressed(String currencySymbol) {
-        return uniqueID + ",\"" + name + "\",\"" + manufacturer.getName() + "\"," + currencySymbol + price + "," + quantity + '\n';
+        return uniqueID + ",\"" + name + "\",\"" + manufacturer.getName() + "\","
+                + currencySymbol + String.format("%.2f", price) + "," + quantity + '\n';
     }
 
     /** returns a verbose String with the product attributes **/
