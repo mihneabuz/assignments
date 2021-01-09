@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 /** wrapper over InputStream to handle reading binary files **/
 public class BinaryInputStream {

@@ -23,8 +23,8 @@ public class ProductReader {
         }
     }
 
-    /** reads one line of the csv file and returns a Product **/
-    /** read products are automatically converted to default Currency **/
+    /** reads one line of the csv file and returns a Product
+    /   read products are automatically converted to default Currency **/
     public Product readNext() throws IOException, InvalidProductException{
         String[] fields;
         try {

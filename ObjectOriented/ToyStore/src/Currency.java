@@ -7,7 +7,7 @@ public class Currency {
     private String symbol;
     private double parityToEur;
 
-    /* inital entries of the static Currency list, first entry considered default Currency */
+    /* initial entries of the static Currency list, first entry considered default Currency */
     static {
         new Currency("EUR", "€", 1.0f);
         new Currency("GBP", "£", 1.09f);
