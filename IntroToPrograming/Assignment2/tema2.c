@@ -328,12 +328,12 @@ int main(void)
         if (strstr(cmd, "load"))
         {
             cmd[strlen(cmd) - 1] = '\0';
-	    buffer = malloc(MAX_POEM_SIZE * sizeof(char)); 
+	        buffer = malloc(MAX_POEM_SIZE * sizeof(char)); 
             load_file(cmd + 5, buffer);
 
-	    poem = malloc( (strlen(buffer) * 1.1) * sizeof(char));
-	    strcpy(poem, buffer);
-	    free(buffer);
+            poem = malloc( (strlen(buffer) * 1.1) * sizeof(char));
+            strcpy(poem, buffer);
+            free(buffer);
         }
         else if (strstr(cmd, "uppercase"))
         {
@@ -374,10 +374,10 @@ int main(void)
                 rima[1] = 4;
                 rima[2] = 3;
                 rima[3] = 2;
-		rima[4] = 1;
+		        rima[4] = 1;
             }
             rhyme(poem, rima);
-	    free(rima);
+            free(rima);
         }
         else if (strstr(cmd, "print"))
         {
@@ -386,7 +386,7 @@ int main(void)
         else if (strstr(cmd, "quit"))
         {
             run = 0;
-	    free(poem);
+            free(poem);
         }
     }
     return 0;
