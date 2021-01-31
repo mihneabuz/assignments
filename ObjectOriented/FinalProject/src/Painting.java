@@ -4,7 +4,6 @@ public class Painting extends Product {
         ACRYLIC,
         TEMPERA
     }
-
     private String artistName;
     private Colors colors;
 
@@ -12,10 +11,10 @@ public class Painting extends Product {
         super();
     }
 
-    public Painting(int ID, String name, double startPrice, String artistName, Colors colors) {
+    public Painting(int ID, String name, double startPrice, String artistName, String colors) {
         super(ID, name, startPrice);
         this.artistName = artistName;
-        this.colors = colors;
+        this.colors = Colors.valueOf(colors);
     }
 
     public void setArtistName(String artistName) {

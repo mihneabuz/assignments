@@ -1,45 +1,95 @@
-public class ProductBuilder<T extends Product> {
-    int ID;
-    String name;
-    double startPrice;
-    String artistName;
-    String colors;
-    String material;
-    String furnitureType;
-    boolean withGem;
+public class ProductBuilder {
+    private String TYPE;
+    private int ID;
+    private String name;
+    private double startPrice;
+    private String artistName;
+    private String colors;
+    private String furnitureType;
+    private String material;
+    private boolean withGem;
 
-    public ProductBuilder() {
+    public ProductBuilder(String TYPE) {
+        this.TYPE = TYPE;
     }
 
-    ProductBuilder<T> withID(int ID) {
+    public ProductBuilder withID(int ID) {
         this.ID = ID;
         return this;
     }
 
-    ProductBuilder<T> withName(String name) {
+    public ProductBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    ProductBuilder<T> withStartPrice(double startPrice) {
+    public ProductBuilder withStartPrice(double startPrice) {
         this.startPrice = startPrice;
         return this;
     }
 
-    ProductBuilder<T> withArtist(String name) {
-        this.artistName = name;
+    public ProductBuilder withArtist(String artistName) {
+        this.artistName = artistName;
         return this;
     }
 
-    ProductBuilder<T> withColors(String colors) {
+    public ProductBuilder withColors(String colors) {
         this.colors = colors;
         return this;
     }
-    //ProductBuilder<T> withMaterial(String material) throws InvalidProductException;
-    //ProductBuilder<T> withFurnitureType(String type) throws InvalidProductException;
-    ///ProductBuilder<T> withGem(Boolean gem) throws InvalidProductException;
 
-    Product build() {
-        return new T(this);
+    public ProductBuilder withFurnitureType(String furnitureType) {
+        this.furnitureType = furnitureType;
+        return this;
+    }
+
+    public ProductBuilder withMaterial(String material) {
+        this.material = material;
+        return this;
+    }
+
+    public ProductBuilder setWithGem(boolean withGem) {
+        this.withGem = withGem;
+        return this;
+    }
+
+    public Product build() throws InvalidProductException {
+        return ProductFactory.buildProduct(this);
+    }
+
+    public String getTYPE() {
+        return TYPE;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getStartPrice() {
+        return startPrice;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public String getColors() {
+        return colors;
+    }
+
+    public String getFurnitureType() {
+        return furnitureType;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public boolean isWithGem() {
+        return withGem;
     }
 }

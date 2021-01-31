@@ -39,6 +39,10 @@ public class Product {
         return this.sold;
     }
 
+    public int getID() {
+        return this.ID;
+    }
+
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append(String.format("Product: %d\n%s\n", ID, name));
