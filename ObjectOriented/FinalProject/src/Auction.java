@@ -22,8 +22,16 @@ public class Auction implements Runnable {
         maxBids--;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
     public double getCurrentPrice() {
         return currentPrice;
+    }
+
+    public boolean isOpen() {
+        return status.isOpen();
     }
 
     @Override

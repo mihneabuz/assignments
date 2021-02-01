@@ -45,10 +45,15 @@ public class Administrator extends Employee {
 
     public void openAuction(Product product) {
         System.out.println("New auction opened for item:\n" + product.toString());
+        product.setInAuction();
         busy = true;
         Auction auction = new Auction(auctionHouse.nextAuctionID(), product, AuctionHouse.MAX_BIDS);
         auctionHouse.addAuction(auction);
         new Thread(auction).start();
         busy = false;
+    }
+
+    public String toString() {
+        return "Administrator " + super.toString() + (busy ? "(working)" : "(waiting)");
     }
 }

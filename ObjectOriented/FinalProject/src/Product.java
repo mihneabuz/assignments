@@ -3,12 +3,12 @@ public class Product {
     private String name;
     private boolean onAuction;
     private double startPrice;
-    private boolean sold;
+    private boolean inAuction;
     private double soldPrice;
 
     public Product() {
         this.onAuction = false;
-        this.sold = false;
+        this.inAuction = false;
         this.soldPrice = Integer.MIN_VALUE;
     }
 
@@ -16,7 +16,7 @@ public class Product {
         this.ID = ID;
         this.name = name;
         this.startPrice = startPrice;
-        this.sold = false;
+        this.inAuction = false;
         this.soldPrice = Integer.MIN_VALUE;
     }
 
@@ -32,13 +32,12 @@ public class Product {
         this.startPrice = startPrice;
     }
 
-    public void setSold(double price) {
-        this.sold = true;
-        this.soldPrice = price;
+    public void setInAuction() {
+        this.inAuction = true;
     }
 
-    public boolean wasSold() {
-        return this.sold;
+    public boolean isInAuction() {
+        return inAuction;
     }
 
     public int getID() {
@@ -52,8 +51,8 @@ public class Product {
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append(String.format("Product: %d\n%s\n", ID, name));
-        if (this.sold)
-            string.append(String.format("Sold for %.2f", soldPrice));
+        if (this.inAuction)
+            string.append(String.format("Currently in auction", soldPrice));
         else
             string.append(String.format("Starting price %.2f", startPrice));
         return string.toString();

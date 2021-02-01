@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AuctionHouse {
@@ -22,11 +21,6 @@ public class AuctionHouse {
         return INSTANCE;
     }
 
-
-    public ConcurrentHashMap<Integer, Product> getProducts() {
-        return products;
-    }
-
     public void addProduct(Product product) {
         products.put(product.getID(), product);
         assert products.size() <= AuctionHouse.PRODUCT_CAPACITY;
@@ -41,6 +35,10 @@ public class AuctionHouse {
         clients.add(client);
     }
 
+    public void addBroker(Broker broker) {
+        brokers.add(broker);
+    }
+
     public void addAuction(Auction auction) {
         auctions.add(auction);
     }
@@ -49,10 +47,9 @@ public class AuctionHouse {
         return products.get(i);
     }
 
-    public ArrayList<Product> getProductsOnSale() {
+    public ArrayList<Product> getProducts() {
         ArrayList<Product> forSale = new ArrayList<>();
         for (Product product : products.values()) {
-            if (!product.wasSold())
                 forSale.add(product);
         }
         return forSale;
@@ -69,6 +66,19 @@ public class AuctionHouse {
         return clients;
     }
 
+    public Broker requestBroker() throws NoBrokersAvailableException {
+        for (Broker broker : brokers)
+            if (!broker.isBusy()) {
+                broker.setBusy();
+                return broker;
+            }
+        throw new No
+    }
+
+    public ArrayList<Auction> getAuctions() {
+        return auctions;
+    }
+
     public int nextAuctionID() {
         return lastAuctionID++;
     }
@@ -82,7 +92,16 @@ public class AuctionHouse {
         StringBuilder string = new StringBuilder("Products: ");
         for (Product product : products.values())
             string.append(product.getID() + " ");
-        string.append("\nClients: ");
+        string.append("\nAuctions for: ");
+        for (Auction auction : auctions)
+            string.append(auction.getProduct().getID() + " ");
+        string.append("\n\nAdmins: ");
+        for (Administrator admin : admins)
+            string.append("\n" + admin.toString());
+        string.append("\n\nBrokers: ");
+        for (Broker broker : brokers)
+            string.append("\n" + broker.toString());
+        string.append("\n\nClients: ");
         for (Client client : clients)
             string.append("\n" + client.toString());
         System.err.println(string);

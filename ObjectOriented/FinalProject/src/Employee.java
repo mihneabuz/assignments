@@ -9,4 +9,8 @@ public class Employee {
         this.ID = ID;
         this.name = name;
     }
+
+    public String toString() {
+        return this.name;
+    }
 }

@@ -2,6 +2,7 @@ public class Client {
     private int ID;
     private String name;
     private String address;
+    private Broker broker;
     private int participatedAuctions;
     private int wonAuctions;
 
@@ -17,7 +18,7 @@ public class Client {
     }
 
     public void requestBroker(AuctionHouse ah) {
-
+        broker = ah.requestBroker();
     }
 
     public String toString() {

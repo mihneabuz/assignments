@@ -6,9 +6,8 @@ public class Simulation {
     private static final int MAX_PRODUCTS = 10;
     private static final int MAX_CLIENTS = 20;
     private static int lastID = 0;
-    private static int lastAdminID = 0;
+    private static int lastEmployeeID = 0;
     private static int lastClientID = 0;
-
 
     public static Product generateRandomProduct() {
         Random x = new Random();
@@ -53,7 +52,12 @@ public class Simulation {
 
     public static Administrator generateRandomAdministrator(AuctionHouse ah) {
         String[] names = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin", "Huan", "Arnold", "Dragnea"};
-        return new Administrator(lastAdminID++, names[new Random().nextInt(names.length)], ah);
+        return new Administrator(lastEmployeeID++, names[new Random().nextInt(names.length)], ah);
+    }
+
+    public static Broker generateRandomBroker() {
+        String[] names = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin", "Huan", "Arnold", "Dragnea"};
+        return new Broker(lastEmployeeID++, names[new Random().nextInt(names.length)]);
     }
 
     public static Client generateRandomBot(AuctionHouse ah) {
@@ -67,11 +71,22 @@ public class Simulation {
         return new Bot(lastClientID++, names[c1] + " Bot", addresses[c2]);
     }
 
-    public static Product getRandomProductFromAH(AuctionHouse auctionHouse) {
-        ArrayList<Product> products = auctionHouse.getProductsOnSale();
-        if (products.size() > 0)
-            return (Product) products.get(new Random().nextInt(products.size()));
+    public static Product getRandomProductForAuction(AuctionHouse auctionHouse) {
+        ArrayList<Product> products = auctionHouse.getProducts();
+        int i = new Random().nextInt(products.size());
+        if (!products.get(i).isInAuction())
+            return products.get(i);
+        while (i < 2 * products.size()) {
+            if (!products.get(i % products.size()).isInAuction())
+                return products.get(i % products.size());
+            i++;
+        }
         return null;
+    }
+
+    public static Auction getRandomOpenAuction(AuctionHouse auctionHouse) {
+        ArrayList<Auction> auctions = auctionHouse.getAuctions();
+        return auctions.get(0);
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -80,26 +95,37 @@ public class Simulation {
         int step = 1;
         int nrProducts = 0;
         int nrClients = 0;
+        int nrBrokers = 0;
         Random seed = new Random();
         for (int i = 0; i < AuctionHouse.PRODUCT_CAPACITY; i++)
             ah.addAdministrator(generateRandomAdministrator(ah));
 
-        while(true) {
+        while (true) {
             if (nrProducts < MAX_PRODUCTS && seed.nextInt(100) > 90) {
                 nrProducts++;
                 Product product = generateRandomProduct();
                 Administrator admin = ah.getAdministrator();
                 new Thread(new Listing(admin, product)).start();
             }
-            if (nrClients < MAX_CLIENTS && seed.nextInt(100) > 95) {
+            if (nrClients < MAX_CLIENTS && seed.nextInt(100) > 90) {
                 nrClients++;
                 Client client = generateRandomBot(ah);
                 new Thread(new Register(ah, client)).start();
             }
-            if (ah.getProductsOnSale().size() > 0 && seed.nextInt(100) > 90) {
-                Product p = getRandomProductFromAH(ah);
-                Administrator admin = ah.getAdministrator();
-                admin.openAuction(p);
+            if (nrBrokers < MAX_CLIENTS && seed.nextInt(100) > 90) {
+                nrBrokers++;
+                Broker broker = generateRandomBroker();
+                ah.addBroker(broker);
+            }
+            if (ah.getProducts().size() > 0 && seed.nextInt(100) > 95) {
+                Product p = getRandomProductForAuction(ah);
+                if (p != null) {
+                    Administrator admin = ah.getAdministrator();
+                    admin.openAuction(p);
+                }
+            }
+            if (ah.getAuctions().size() > 0 && seed.nextInt(100) > 80) {
+
             }
 
 
