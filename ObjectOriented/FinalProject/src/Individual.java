@@ -5,8 +5,8 @@ public class Individual extends Client {
         super();
     }
 
-    public Individual(int ID, String name, String address, int participatedAuctions, int wonAuctions, String birthDate) {
-        super(ID, name, address, participatedAuctions, wonAuctions);
+    public Individual(int ID, String name, String address, String birthDate) {
+        super(ID, name, address);
         this.birthDate = birthDate;
     }
 }

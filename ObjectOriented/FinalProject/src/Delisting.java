@@ -10,6 +10,6 @@ public class Delisting implements Runnable {
     @Override
     public void run() {
         admin.removeProduct(product);
-        //System.out.println("Removed ID: " + product.getID());
+        System.out.println("Sold ID: " + product.getID());
     }
 }

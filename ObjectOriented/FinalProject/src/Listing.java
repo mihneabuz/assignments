@@ -10,6 +10,6 @@ public class Listing implements Runnable {
     @Override
     public void run() {
         admin.addProduct(product);
-        //System.out.println("Added ID: " + product.getID());
+        System.out.println("For sale ID: " + product.getID());
     }
 }

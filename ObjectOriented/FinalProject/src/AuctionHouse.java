@@ -1,15 +1,17 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AuctionHouse {
     private static AuctionHouse INSTANCE;
-    public static int PRODUCT_CAPACITY = 10;
-    private ConcurrentHashMap<Integer, Product> products = new ConcurrentHashMap<>();
-    private HashMap<Integer, Client> clients = new HashMap<>();
-    private ArrayList<Broker> brokers = new ArrayList<>();
-    private ArrayList<Administrator> admins = new ArrayList<>();
-    private ArrayList<Auction> activeAuctions = new ArrayList<>();
+    public static final int PRODUCT_CAPACITY = 5;
+    public static final int MAX_BIDS = 5;
+    private final ConcurrentHashMap<Integer, Product> products = new ConcurrentHashMap<>(PRODUCT_CAPACITY);
+    private final ArrayList<Client> clients = new ArrayList<>();
+    private final ArrayList<Broker> brokers = new ArrayList<>();
+    private final ArrayList<Administrator> admins = new ArrayList<>(PRODUCT_CAPACITY);
+    private final ArrayList<Auction> auctions = new ArrayList<>();
+    private int lastAuctionID = 0;
 
     private AuctionHouse() {
     }
@@ -18,6 +20,29 @@ public class AuctionHouse {
         if (INSTANCE == null)
             INSTANCE = new AuctionHouse();
         return INSTANCE;
+    }
+
+
+    public ConcurrentHashMap<Integer, Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        products.put(product.getID(), product);
+        assert products.size() <= AuctionHouse.PRODUCT_CAPACITY;
+    }
+
+    public void addAdministrator(Administrator admin) {
+        if (admins.size() < AuctionHouse.PRODUCT_CAPACITY)
+            admins.add(admin);
+    }
+
+    public synchronized void addClient(Client client) {
+        clients.add(client);
+    }
+
+    public void addAuction(Auction auction) {
+        auctions.add(auction);
     }
 
     public Product getProduct(int i) {
@@ -33,13 +58,19 @@ public class AuctionHouse {
         return forSale;
     }
 
-    public ConcurrentHashMap<Integer, Product> getProducts() {
-        return products;
+    public Administrator getAdministrator() {
+        for (Administrator admin : admins)
+            if (!admin.isBusy())
+                return admin;
+        return null;
     }
 
-    public void addProduct(Product product) {
-        products.put(product.getID(), product);
-        assert products.size() <= AuctionHouse.PRODUCT_CAPACITY;
+    public ArrayList<Client> getClients() {
+        return clients;
+    }
+
+    public int nextAuctionID() {
+        return lastAuctionID++;
     }
 
     public void printProducts() {
@@ -48,10 +79,13 @@ public class AuctionHouse {
     }
 
     public void debug() {
-        StringBuilder string = new StringBuilder();
+        StringBuilder string = new StringBuilder("Products: ");
         for (Product product : products.values())
             string.append(product.getID() + " ");
-        System.out.println(string);
+        string.append("\nClients: ");
+        for (Client client : clients)
+            string.append("\n" + client.toString());
+        System.err.println(string);
     }
 
 
@@ -74,4 +108,5 @@ public class AuctionHouse {
         ah.printProducts();
 
     }
+
 }

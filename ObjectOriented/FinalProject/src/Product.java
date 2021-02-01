@@ -1,11 +1,13 @@
 public class Product {
     private int ID;
     private String name;
+    private boolean onAuction;
     private double startPrice;
     private boolean sold;
     private double soldPrice;
 
     public Product() {
+        this.onAuction = false;
         this.sold = false;
         this.soldPrice = Integer.MIN_VALUE;
     }
@@ -41,6 +43,10 @@ public class Product {
 
     public int getID() {
         return this.ID;
+    }
+
+    public double getStartPrice() {
+        return startPrice;
     }
 
     public String toString() {

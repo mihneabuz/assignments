@@ -6,7 +6,7 @@ public class Broker extends Employee {
 
     }
 
-    private int getCurrentPrice() {
+    private double getCurrentPrice() {
         return auction.getCurrentPrice();
     }
 }

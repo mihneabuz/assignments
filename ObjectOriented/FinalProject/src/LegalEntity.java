@@ -11,8 +11,8 @@ public class LegalEntity extends Client {
         super();
     }
 
-    public LegalEntity(int ID, String name, String address, int participatedAuctions, int wonAuctions, double capital, Company company) {
-        super(ID, name, address, participatedAuctions, wonAuctions);
+    public LegalEntity(int ID, String name, String address, double capital, Company company) {
+        super(ID, name, address);
         this.capital = capital;
         this.company = company;
     }

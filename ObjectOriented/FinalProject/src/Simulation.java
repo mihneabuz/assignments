@@ -3,11 +3,12 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Simulation {
+    private static final int MAX_PRODUCTS = 10;
+    private static final int MAX_CLIENTS = 20;
     private static int lastID = 0;
+    private static int lastAdminID = 0;
+    private static int lastClientID = 0;
 
-    private static synchronized int inc() {
-        return lastID++;
-    }
 
     public static Product generateRandomProduct() {
         Random x = new Random();
@@ -34,7 +35,7 @@ public class Simulation {
         Product p;
         try {
             p = new ProductBuilder(types[c1])
-                    .withID(inc())
+                    .withID(lastID++)
                     .withName(names[c2])
                     .withStartPrice(x.nextInt(200))
                     .withArtist(artists[c3])
@@ -50,6 +51,22 @@ public class Simulation {
         return p;
     }
 
+    public static Administrator generateRandomAdministrator(AuctionHouse ah) {
+        String[] names = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin", "Huan", "Arnold", "Dragnea"};
+        return new Administrator(lastAdminID++, names[new Random().nextInt(names.length)], ah);
+    }
+
+    public static Client generateRandomBot(AuctionHouse ah) {
+        String[] names = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin", "Huan", "Arnold", "Dragnea"};
+        int c1 = new Random().nextInt(names.length);
+
+        String[] addresses = new String[]{"USA", "Africa", "Caransebes", "Vaslui", "Ardeal", "Rrrrusia", "Germoney",
+                                          "Greece", "Pastaland", "Croissant", "The Motherland"};
+        int c2 = new Random().nextInt(addresses.length);
+
+        return new Bot(lastClientID++, names[c1] + " Bot", addresses[c2]);
+    }
+
     public static Product getRandomProductFromAH(AuctionHouse auctionHouse) {
         ArrayList<Product> products = auctionHouse.getProductsOnSale();
         if (products.size() > 0)
@@ -59,19 +76,39 @@ public class Simulation {
 
     public static void main(String[] args) throws InterruptedException {
         AuctionHouse ah = AuctionHouse.getINSTANCE();
-        Administrator admin1 = new Administrator(0, "Franz", ah);
-        Administrator admin2 = new Administrator(1, "Huan", ah);
-        ArrayBlockingQueue<Product> products = new ArrayBlockingQueue<Product>(100);
 
-        for (int i = 0; i < 30; i ++) {
-            Product p = generateRandomProduct();
-            products.add(p);
-            new Thread(new Listing(admin1, p)).start();
-            if (i > 5)
-                new Thread(new Delisting(admin2, products.take())).start();
+        int step = 1;
+        int nrProducts = 0;
+        int nrClients = 0;
+        Random seed = new Random();
+        for (int i = 0; i < AuctionHouse.PRODUCT_CAPACITY; i++)
+            ah.addAdministrator(generateRandomAdministrator(ah));
+
+        while(true) {
+            if (nrProducts < MAX_PRODUCTS && seed.nextInt(100) > 90) {
+                nrProducts++;
+                Product product = generateRandomProduct();
+                Administrator admin = ah.getAdministrator();
+                new Thread(new Listing(admin, product)).start();
+            }
+            if (nrClients < MAX_CLIENTS && seed.nextInt(100) > 95) {
+                nrClients++;
+                Client client = generateRandomBot(ah);
+                new Thread(new Register(ah, client)).start();
+            }
+            if (ah.getProductsOnSale().size() > 0 && seed.nextInt(100) > 90) {
+                Product p = getRandomProductFromAH(ah);
+                Administrator admin = ah.getAdministrator();
+                admin.openAuction(p);
+            }
+
+
+
+            if (step % 50 == 0)
+                ah.debug();
+            step++;
+            Thread.sleep(300);
         }
-        for (int i = 0; i < 6; i ++)
-            new Thread(new Delisting(admin2, products.take())).start();
 
     }
 }

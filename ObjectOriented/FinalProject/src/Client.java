@@ -8,15 +8,19 @@ public class Client {
     public Client() {
     }
 
-    public Client(int ID, String name, String address, int participatedAuctions, int wonAuctions) {
+    public Client(int ID, String name, String address) {
         this.ID = ID;
         this.name = name;
         this.address = address;
-        this.participatedAuctions = participatedAuctions;
-        this.wonAuctions = wonAuctions;
+        this.participatedAuctions = 0;
+        this.wonAuctions = 0;
     }
 
     public void requestBroker(AuctionHouse ah) {
 
+    }
+
+    public String toString() {
+        return name + " from " + address;
     }
 }

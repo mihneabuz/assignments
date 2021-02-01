@@ -3,18 +3,23 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Administrator extends Employee {
     public AuctionHouse auctionHouse;
-    Lock lock = new ReentrantLock();
+    private boolean busy = false;
+    private Auction auction;
+    private final Lock lock = new ReentrantLock();
 
     public Administrator(int ID, String name, AuctionHouse auctionHouse) {
         super(ID, name);
         this.auctionHouse = auctionHouse;
     }
 
+    public boolean isBusy() {
+        return busy;
+    }
+
     public void addProduct(Product p) {
         lock.lock();
-        auctionHouse.debug();
         try {
-            Thread.sleep(100);
+            Thread.sleep(300);
             while (auctionHouse.getProducts().size() >= AuctionHouse.PRODUCT_CAPACITY)
                 Thread.sleep(100);
             auctionHouse.addProduct(p);
@@ -27,10 +32,10 @@ public class Administrator extends Employee {
 
     public void removeProduct(Product p) {
         lock.lock();
-        auctionHouse.debug();
         try {
-            Thread.sleep(300);
-            auctionHouse.getProducts().remove(p.getID());
+            Thread.sleep(1000);
+            Product aux = auctionHouse.getProducts().remove(p.getID());
+            assert aux != null;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -38,7 +43,12 @@ public class Administrator extends Employee {
         }
     }
 
-    public void openAuction() {
-
+    public void openAuction(Product product) {
+        System.out.println("New auction opened for item:\n" + product.toString());
+        busy = true;
+        Auction auction = new Auction(auctionHouse.nextAuctionID(), product, AuctionHouse.MAX_BIDS);
+        auctionHouse.addAuction(auction);
+        new Thread(auction).start();
+        busy = false;
     }
 }
