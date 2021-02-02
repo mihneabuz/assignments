@@ -1,10 +1,12 @@
 public class AuctionStatus {
     private boolean open;
+    private boolean finished;
     private Client winner;
     private Broker broker;
 
     public AuctionStatus() {
-        this.open = true;
+        this.open = false;
+        this.finished = false;
     }
 
     public boolean isOpen() {
@@ -17,6 +19,14 @@ public class AuctionStatus {
 
     public Broker getBroker() {
         return broker;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public void setOpen(boolean open) {

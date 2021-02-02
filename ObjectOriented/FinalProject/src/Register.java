@@ -9,7 +9,8 @@ public class Register implements Runnable {
 
     @Override
     public void run() {
+        client.setID(auctionHouse.requestNewClientID());
         auctionHouse.addClient(client);
-        System.out.println("New client registered: " + client.toString());
+        System.err.println("New client registered: " + client.toString());
     }
 }

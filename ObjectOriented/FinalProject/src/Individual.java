@@ -9,4 +9,13 @@ public class Individual extends Client {
         super(ID, name, address);
         this.birthDate = birthDate;
     }
+
+    @Override
+    public double getCommission() {
+        return 0.15;
+    }
+
+    public String toString() {
+        return super.toString() + " born in " + birthDate;
+    }
 }

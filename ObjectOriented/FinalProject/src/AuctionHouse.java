@@ -1,16 +1,20 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AuctionHouse {
     private static AuctionHouse INSTANCE;
-    public static final int PRODUCT_CAPACITY = 5;
-    public static final int MAX_BIDS = 5;
+    public static final int PRODUCT_CAPACITY = 10;
+    public static final int MAX_AUCTIONS = 5;
+    public static final int MAX_BIDS = 20;
+    public static final int MAX_AUCTION_DURATION = 60;
     private final ConcurrentHashMap<Integer, Product> products = new ConcurrentHashMap<>(PRODUCT_CAPACITY);
     private final ArrayList<Client> clients = new ArrayList<>();
     private final ArrayList<Broker> brokers = new ArrayList<>();
     private final ArrayList<Administrator> admins = new ArrayList<>(PRODUCT_CAPACITY);
     private final ArrayList<Auction> auctions = new ArrayList<>();
-    private int lastAuctionID = 0;
+    private int lastClientID = 1;
+    private int lastAuctionID = 1;
 
     private AuctionHouse() {
     }
@@ -21,9 +25,18 @@ public class AuctionHouse {
         return INSTANCE;
     }
 
+    public synchronized int requestNewClientID() {
+        return lastClientID++;
+    }
+
+
     public void addProduct(Product product) {
         products.put(product.getID(), product);
         assert products.size() <= AuctionHouse.PRODUCT_CAPACITY;
+    }
+
+    public Product removeProduct(int ID) {
+        return products.remove(ID);
     }
 
     public void addAdministrator(Administrator admin) {
@@ -39,27 +52,16 @@ public class AuctionHouse {
         brokers.add(broker);
     }
 
-    public void addAuction(Auction auction) {
-        auctions.add(auction);
-    }
-
     public Product getProduct(int i) {
         return products.get(i);
     }
 
     public ArrayList<Product> getProducts() {
-        ArrayList<Product> forSale = new ArrayList<>();
-        for (Product product : products.values()) {
-                forSale.add(product);
-        }
-        return forSale;
+        return new ArrayList<>(products.values());
     }
 
     public Administrator getAdministrator() {
-        for (Administrator admin : admins)
-            if (!admin.isBusy())
-                return admin;
-        return null;
+        return admins.get(new Random().nextInt(admins.size()));
     }
 
     public ArrayList<Client> getClients() {
@@ -69,14 +71,27 @@ public class AuctionHouse {
     public Broker requestBroker() throws NoBrokersAvailableException {
         for (Broker broker : brokers)
             if (!broker.isBusy()) {
-                broker.setBusy();
                 return broker;
             }
-        throw new No
+        throw new NoBrokersAvailableException("No brokers are currently available");
+    }
+
+    public void addAuction(Auction auction) {
+        auctions.add(auction);
     }
 
     public ArrayList<Auction> getAuctions() {
         return auctions;
+    }
+
+    public ArrayList<Auction> getActiveAuctions() {
+        ArrayList<Auction> activeAuctions = new ArrayList<>();
+        for (int i = 0; i < auctions.size(); i++) {
+            Auction auction = auctions.get(i);
+            if (!auction.isFinished())
+                activeAuctions.add(auction);
+        }
+        return activeAuctions;
     }
 
     public int nextAuctionID() {
@@ -91,41 +106,19 @@ public class AuctionHouse {
     public void debug() {
         StringBuilder string = new StringBuilder("Products: ");
         for (Product product : products.values())
-            string.append(product.getID() + " ");
-        string.append("\nAuctions for: ");
-        for (Auction auction : auctions)
-            string.append(auction.getProduct().getID() + " ");
+            string.append(product.getID()).append(" ");
+        string.append("\nOpen auctions: ");
+        for (Auction auction : getActiveAuctions())
+            string.append("\nAuction ").append(auction.toString());
         string.append("\n\nAdmins: ");
         for (Administrator admin : admins)
-            string.append("\n" + admin.toString());
+            string.append("\n").append(admin.toString());
         string.append("\n\nBrokers: ");
         for (Broker broker : brokers)
-            string.append("\n" + broker.toString());
+            string.append("\n").append(broker.toString());
         string.append("\n\nClients: ");
         for (Client client : clients)
-            string.append("\n" + client.toString());
+            string.append("\n").append(client.toString());
         System.err.println(string);
     }
-
-
-    public static void main(String[] args) {
-        AuctionHouse ah = AuctionHouse.getINSTANCE();
-        Product p = null;
-        try {
-             p = new ProductBuilder("PAINTING")
-                    .withID(2)
-                    .withName("dabada")
-                    .withStartPrice(3.50d)
-                    .withArtist("Jhonul")
-                    .withColors("TEMPERA")
-                    .build();
-        } catch (InvalidProductException e) {
-            System.out.println(e);
-        }
-        System.out.println(p.toString() + "\n\n");
-        ah.addProduct(p);
-        ah.printProducts();
-
-    }
-
 }

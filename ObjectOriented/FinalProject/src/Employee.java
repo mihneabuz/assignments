@@ -10,6 +10,14 @@ public class Employee {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
     public String toString() {
         return this.name;
     }
