@@ -1,3 +1,5 @@
+package Main;
+
 public class Delisting implements Runnable {
     private Administrator admin;
     private Product product;
@@ -10,6 +12,6 @@ public class Delisting implements Runnable {
     @Override
     public void run() {
         admin.removeProduct(product);
-        System.err.println("Removed product with ID: " + product.getID());
+        System.err.println("<- Removed product with ID: " + product.getID());
     }
 }

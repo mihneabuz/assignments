@@ -1,3 +1,5 @@
+package Main;
+
 public class Broker extends Employee {
     private double commission;
     private Client client;
@@ -65,7 +67,7 @@ public class Broker extends Employee {
     }
 
     public String toString() {
-        return "Broker " + super.toString() + (busy ? " (working on " + auction.getID() + ")" : " (waiting)");
+        return "Main.Broker " + super.toString() + (busy ? " (working on " + auction.getID() + ")" : " (waiting)");
     }
 
 }

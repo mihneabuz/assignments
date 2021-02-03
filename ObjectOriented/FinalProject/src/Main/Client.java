@@ -1,8 +1,11 @@
+package Main;
+
 public class Client {
     private int ID;
     private String name;
     private String address;
     protected Broker broker;
+    private double credit;
     private int participatedAuctions;
     private int wonAuctions;
 
@@ -13,6 +16,7 @@ public class Client {
         this.ID = ID;
         this.name = name;
         this.address = address;
+        this.credit = 0;
         this.participatedAuctions = 0;
         this.wonAuctions = 0;
         this.broker = null;
@@ -20,6 +24,14 @@ public class Client {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public void setCredit(double credit) {
+        this.credit = credit;
+    }
+
+    public double getCredit() {
+        return credit;
     }
 
     public Broker getBroker() {
@@ -60,9 +72,8 @@ public class Client {
         if (broker == null)
             return;
         broker.setAuction(auction);
-        auction.notifyNewParticipant();
+        auction.notifyNewParticipant(name);
         participatedAuctions += 1;
-        System.out.println(name + " has entered auction " + auction.getID());
     }
 
     public void bid(double price) {
@@ -84,6 +95,6 @@ public class Client {
     }
 
     public String toString() {
-        return ID + " " + name + " from " + address;
+        return name + " from " + address;
     }
 }

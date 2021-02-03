@@ -1,3 +1,5 @@
+package Main;
+
 public class Listing implements Runnable {
     private Administrator admin;
     private Product product;
@@ -10,6 +12,6 @@ public class Listing implements Runnable {
     @Override
     public void run() {
         admin.addProduct(product);
-        System.err.println("Added product with ID: " + product.getID());
+        System.err.println("-> Added product with ID: " + product.getID());
     }
 }

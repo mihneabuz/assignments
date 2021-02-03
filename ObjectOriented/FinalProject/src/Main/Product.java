@@ -1,3 +1,5 @@
+package Main;
+
 public class Product {
     private int ID;
     private String name;
@@ -50,9 +52,9 @@ public class Product {
 
     public String toString() {
         StringBuilder string = new StringBuilder();
-        string.append(String.format("Product: %d\n%s\n", ID, name));
+        string.append(String.format("Main.Product: %d\n%s\n", ID, name));
         if (this.inAuction)
-            string.append(String.format("Currently in auction", soldPrice));
+            string.append(String.format("Currently in auction"));
         else
             string.append(String.format("Starting price %.2f", startPrice));
         return string.toString();

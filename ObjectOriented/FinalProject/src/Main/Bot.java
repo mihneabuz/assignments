@@ -1,3 +1,5 @@
+package Main;
+
 import java.util.Random;
 
 public class Bot extends Client {
@@ -15,20 +17,21 @@ public class Bot extends Client {
         if (new Random().nextInt(100) > bidChance)
             return;
         double currentPrice = broker.getCurrentPrice();
-        double newPrice = currentPrice + 20.0 + (new Random().nextInt(maxRaiseAmount)) / 1.3;
-        broker.notifyBid(newPrice);
+        double newPrice = currentPrice + 20.0 + (new Random().nextInt(maxRaiseAmount));
+        if (newPrice <= getCredit())
+            broker.notifyBid(newPrice);
         bidChance -= 1;
     }
 
     @Override
     public void enterAuction(Auction auction) {
-        bidChance = new Random().nextInt(8) + 2;
+        bidChance = new Random().nextInt(10) + 2;
         maxRaiseAmount = new Random().nextInt(79) + 1;
+        setCredit(new Random().nextInt(maxRaiseAmount * 10) + 300);
         if (broker == null)
             return;
         broker.setAuction(auction);
-        auction.notifyNewParticipant();
-        System.out.println(super.getName() + " has entered auction " + auction.getID());
+        auction.notifyNewParticipant(getName());
     }
 
     @Override

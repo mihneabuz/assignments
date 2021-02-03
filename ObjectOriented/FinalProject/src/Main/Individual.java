@@ -1,3 +1,5 @@
+package Main;
+
 public class Individual extends Client {
     private String birthDate;
 

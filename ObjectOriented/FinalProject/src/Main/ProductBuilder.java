@@ -1,3 +1,5 @@
+package Main;
+
 public class ProductBuilder {
     private String TYPE;
     private int ID;

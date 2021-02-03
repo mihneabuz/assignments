@@ -1,3 +1,5 @@
+package Main;
+
 public class AuctionStatus {
     private boolean open;
     private boolean finished;

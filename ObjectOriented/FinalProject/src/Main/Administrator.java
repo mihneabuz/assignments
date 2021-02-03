@@ -1,3 +1,5 @@
+package Main;
+
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,8 +18,8 @@ public class Administrator extends Employee {
     public void addProduct(Product p) {
         lock.lock();
         try {
-            while (auctionHouse.getProducts().size() >= AuctionHouse.PRODUCT_CAPACITY)
-                Thread.sleep(100);
+            if (auctionHouse.getProducts().size() >= AuctionHouse.PRODUCT_CAPACITY)
+                notFull.await();
             auctionHouse.addProduct(p);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -27,8 +29,16 @@ public class Administrator extends Employee {
     }
 
     public void removeProduct(Product p) {
+        lock.lock();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Product aux = auctionHouse.removeProduct(p.getID());
+        notFull.signal();
         assert aux != null;
+        lock.unlock();
     }
 
     public void openAuction(Product product) {
@@ -37,6 +47,6 @@ public class Administrator extends Employee {
     }
 
     public String toString() {
-        return "Administrator " + super.toString();
+        return "Main.Administrator " + super.toString();
     }
 }

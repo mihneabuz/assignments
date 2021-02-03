@@ -1,9 +1,11 @@
+package Main;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Simulation {
-    private static final int MAX_PRODUCTS = 20;
-    private static final int MAX_CLIENTS = 30;
+    private static final int MAX_PRODUCTS = 10;
+    private static final int MAX_CLIENTS = 15;
     private static int lastID = 0;
     private static int lastEmployeeID = 0;
     private static String[] namesPool = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin",
@@ -27,8 +29,8 @@ public class Simulation {
         String[] colors = new String[]{"TEMPERA", "OIL", "ACRYLIC"};
         int c4 = x.nextInt(3);
 
-        String[] furnitures = new String[]{"Masa", "Fotoliu", "Canapea", "Dulap", "Sifonier"};
-        int c5 = x.nextInt(furnitures.length);
+        String[] furniture = new String[]{"Masa", "Fotoliu", "Canapea", "Dulap", "Sifonier"};
+        int c5 = x.nextInt(furniture.length);
 
         String[] materials = new String[]{"Haur", "Argint", "Lemn", "PVC", "Peatra", "Platinium", "Fer"};
         int c6 = x.nextInt(materials.length);
@@ -41,7 +43,7 @@ public class Simulation {
                     .withStartPrice(x.nextInt(200))
                     .withArtist(artists[c3])
                     .withColors(colors[c4])
-                    .withFurnitureType(furnitures[c5])
+                    .withFurnitureType(furniture[c5])
                     .withMaterial(materials[c6])
                     .setWithGem(x.nextInt(2) > 0)
                     .build();
@@ -67,7 +69,7 @@ public class Simulation {
                                           "Greece", "Pastaland", "Croissant", "The Motherland", "Cazanesti"};
         int c2 = new Random().nextInt(addresses.length);
 
-        return new Bot(0, namesPool[c1] + " Bot", addresses[c2]);
+        return new Bot(0, namesPool[c1] + " Main.Bot", addresses[c2]);
     }
 
     public static Product getRandomProductForAuction(AuctionHouse auctionHouse) {
@@ -83,12 +85,7 @@ public class Simulation {
         return null;
     }
 
-    public static Auction getRandomOpenAuction(AuctionHouse auctionHouse) {
-        ArrayList<Auction> auctions = auctionHouse.getAuctions();
-        return auctions.get(0);
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         AuctionHouse ah = AuctionHouse.getINSTANCE();
 
         int step = 1;
@@ -99,26 +96,32 @@ public class Simulation {
         for (int i = 0; i < 3; i++)
             ah.addAdministrator(generateRandomAdministrator(ah));
 
-        while (step < 100000) {
+        while (true) {
 
-          //  if (step == 20)
-          //      new Thread(new Login(ah)).start();
-            if (nrProducts < MAX_PRODUCTS && seed.nextInt(100) > 90) {
+            // login prompt
+            if (step == 10)
+                new Thread(new Login(ah)).start();
+
+            // add products to inventory
+            if (nrProducts < MAX_PRODUCTS && seed.nextInt(100) > 95) {
                 nrProducts++;
                 Product product = generateRandomProduct();
                 Administrator admin = ah.getAdministrator();
                 new Thread(new Listing(admin, product)).start();
             }
-            if (nrClients < MAX_CLIENTS && seed.nextInt(100) > 90) {
+            // create client bots
+            if (nrClients < MAX_CLIENTS && seed.nextInt(100) > 95) {
                 nrClients++;
                 Client client = generateRandomBot(ah);
                 new Thread(new Register(ah, client)).start();
             }
+            // create brokers
             if (nrBrokers < MAX_CLIENTS && seed.nextInt(100) > 80) {
                 nrBrokers++;
                 Broker broker = generateRandomBroker();
                 ah.addBroker(broker);
             }
+            // start auctions for random products
             if (ah.getProducts().size() > 0 && seed.nextInt(100) > 95) {
                 Product p = getRandomProductForAuction(ah);
                 if (p != null) {
@@ -126,20 +129,22 @@ public class Simulation {
                     admin.openAuction(p);
                 }
             }
+            // add clients to random auctions
             ArrayList<Auction> activeAuctions = ah.getActiveAuctions();
             if (activeAuctions.size() > 0 && seed.nextInt(100) > 80) {
                 Auction auction = activeAuctions.get(seed.nextInt(activeAuctions.size()));
                 for (int i = 0; i < ah.getClients().size(); i++) {
                     Client client = ah.getClients().get(i);
-                    if (client instanceof Bot && client.getBroker() == null && seed.nextInt(100) > 85) {
+                    if (client instanceof Bot && client.getBroker() == null && seed.nextInt(100) > 95) {
                         client.requestBroker(ah);
                         client.enterAuction(auction);
                     }
                 }
             }
+            // bidding on open auctions and dismissing brokers on finished auctions
             for (int i = 0; i < ah.getClients().size(); i++) {
                 Client client = ah.getClients().get(i);
-                if (client instanceof Bot) {
+                if (client instanceof Bot && seed.nextInt(100) > 50) {
                     if (client.hasBroker() && client.broker.isAuctionFinished())
                         client.dismissBroker();
                     else
@@ -147,10 +152,10 @@ public class Simulation {
                 }
             }
 
-            if (step % 500 == 0)
+            if (step % 300 == 0)
                 ah.debug();
             step++;
-            //Thread.sleep(30);
+            Thread.sleep(200);
         }
 
     }

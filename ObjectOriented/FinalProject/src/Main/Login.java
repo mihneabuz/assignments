@@ -1,9 +1,12 @@
+package Main;
+
+import CommandLineInterface.Cli;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Login implements Runnable {
-    private int ID;
     private AuctionHouse auctionHouse;
     private Client client;
 
@@ -48,7 +51,7 @@ public class Login implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            client = new Individual(ID, name, address, birthdate);
+            client = new Individual(0, name, address, birthdate);
         }
         else {
             System.out.println("Please input your Company type:");
@@ -65,10 +68,17 @@ public class Login implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            client = new LegalEntity(ID, name, address, capital, companyType);
+            client = new LegalEntity(0, name, address, capital, companyType);
         }
 
         new Register(auctionHouse, client).run();
-        System.out.println("Registered user " + client.toString());
+        System.out.println("Registered user " + client.toString() + "\n\nWelcome!");
+
+        Cli cli = new Cli(client, reader);
+        try {
+            cli.run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

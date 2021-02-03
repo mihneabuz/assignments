@@ -1,3 +1,5 @@
+package Main;
+
 public class Auction implements Runnable {
     private final AuctionHouse auctionHouse;
     private final int ID;
@@ -31,7 +33,8 @@ public class Auction implements Runnable {
         return currentPrice;
     }
 
-    public synchronized void notifyNewParticipant() {
+    public synchronized void notifyNewParticipant(String name) {
+        System.err.println("<+> " + name + " has entered auction " + this.getID());
         noParticipants++;
     }
 
@@ -73,7 +76,7 @@ public class Auction implements Runnable {
                 e.printStackTrace();
             }
         auctionHouse.addAuction(this);
-        System.err.println("New auction opened for item:\n" + product.toString());
+        System.err.println("\n<=> New auction opened for item:\n" + product.toString() + "\n");
         while (noParticipants < 3)
             try {
                 Thread.sleep(50);
@@ -81,13 +84,13 @@ public class Auction implements Runnable {
                 e.printStackTrace();
             }
         status.setOpen(true);
-        System.out.println("Auction " + ID + " has started");
+        System.err.println("\n<=> Main.Auction " + ID + " has started\n");
 
         int step = 0;
         while(maxBids > 0 && step < AuctionHouse.MAX_AUCTION_DURATION) {
             step++;
             try {
-                Thread.sleep(10);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -96,18 +99,19 @@ public class Auction implements Runnable {
         status.setOpen(false);
         status.setFinished(true);
         if (highestBidder == null) {
-            System.out.println("\nAuction finished: Product not sold.\n");
+            System.err.println("\n<=> Main.Auction " + ID + " finished: Main.Product not sold.\n");
         }
         else {
             Client winner = highestBidder.getClient();
             status.setWinner(winner);
             status.setBroker(highestBidder);
 
+            winner.setCredit(winner.getCredit() - currentPrice);
             winner.setWonAuctions(winner.getWonAuctions() + 1);
             highestBidder.setCommission(highestBidder.getCommission() + currentPrice * winner.getCommission());
 
-            System.out.println("\nAuction " + ID + " finished: Sold to " + status.getWinner().getName() +
-                                " for " + currentPrice + "\n");
+            System.err.println("\n<=> Main.Auction " + ID + " finished: Sold to " + status.getWinner().getName() +
+                                " for " + String.format("%.2f", currentPrice) + "\n");
         }
         Administrator admin = auctionHouse.getAdministrator();
         new Thread(new Delisting(admin, product)).start();

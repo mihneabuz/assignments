@@ -1,3 +1,5 @@
+package Main;
+
 public class ProductFactory {
     public static Product buildProduct(ProductBuilder builder) throws InvalidProductException {
         if (builder.getTYPE().equals("PAINTING"))
@@ -18,6 +20,6 @@ public class ProductFactory {
                                  builder.getStartPrice(),
                                  builder.getMaterial(),
                                  builder.isWithGem());
-        throw new InvalidProductException("Product type invalid");
+        throw new InvalidProductException("Main.Product type invalid");
     }
 }

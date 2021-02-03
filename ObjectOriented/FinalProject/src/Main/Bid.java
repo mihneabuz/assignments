@@ -1,3 +1,5 @@
+package Main;
+
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,8 +23,8 @@ public class Bid implements Runnable {
             auction.setCurrentPrice(newBid);
             auction.setHighestBidder(broker);
             auction.step();
-            System.out.println("New price for auction " + auction.getID() + ": " + newBid + " from " +
-                               broker.getClient().getName());
+            System.err.println("!! Main.Auction " + auction.getID() + ": new bid of " +
+                    String.format("%.2f", newBid) + " from " + broker.getClient().getName());
         }
         lock.unlock();
     }

@@ -1,3 +1,5 @@
+package Main;
+
 public class Painting extends Product {
     public enum Colors {
         OIL,
@@ -26,6 +28,6 @@ public class Painting extends Product {
     }
 
     public String toString() {
-        return String.format("Painting by %s in %s\n", artistName, colors.toString()) + super.toString();
+        return String.format("Main.Painting by %s in %s\n", artistName, colors.toString()) + super.toString();
     }
 }

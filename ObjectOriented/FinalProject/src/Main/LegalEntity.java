@@ -1,3 +1,5 @@
+package Main;
+
 public class LegalEntity extends Client {
     public enum Company {
         SRL,

@@ -1,3 +1,5 @@
+package Main;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -104,19 +106,20 @@ public class AuctionHouse {
     }
 
     public void debug() {
-        StringBuilder string = new StringBuilder("Products: ");
+        StringBuilder string = new StringBuilder("<= Main.Auction House Information =>\n");
+        string.append("(p) Products: ");
         for (Product product : products.values())
             string.append(product.getID()).append(" ");
-        string.append("\nOpen auctions: ");
+        string.append("\n(A) Open auctions: ");
         for (Auction auction : getActiveAuctions())
-            string.append("\nAuction ").append(auction.toString());
-        string.append("\n\nAdmins: ");
+            string.append("\n(a) Main.Auction ").append(auction.toString());
+        string.append("\n\n&Admins: ");
         for (Administrator admin : admins)
             string.append("\n").append(admin.toString());
-        string.append("\n\nBrokers: ");
+        string.append("\n\n$Brokers: ");
         for (Broker broker : brokers)
             string.append("\n").append(broker.toString());
-        string.append("\n\nClients: ");
+        string.append("\n\n@Clients: ");
         for (Client client : clients)
             string.append("\n").append(client.toString());
         System.err.println(string);
