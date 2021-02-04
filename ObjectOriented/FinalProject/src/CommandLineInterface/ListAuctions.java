@@ -18,9 +18,11 @@ public class ListAuctions implements Command{
                 string.append("\nAuction ").append(auction.getID()).append("\n")
                         .append(auction.getProduct().toString()).append("\n");
                 if (auction.isOpen())
-                    string.append(String.format("Opened with %d participants\n", auction.getNoParticipants()));
+                    string.append(String.format("Opened with %d participants", auction.getNoParticipants()))
+                            .append(String.format(" Time remaining: %d", auction.getTimeRemaining()))
+                            .append(" seconds\n");
                 else if (!auction.isFinished())
-                    string.append("Waiting for participants\n");
+                    string.append("Waiting for participants...\n");
             }
         }
         System.out.println(string);

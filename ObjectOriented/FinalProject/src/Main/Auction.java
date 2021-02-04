@@ -11,6 +11,7 @@ public class Auction implements Runnable {
     private int noParticipants;
     private double currentPrice;
     private Broker highestBidder;
+    private int step;
     private int maxBids;
     private final AuctionStatus status;
 
@@ -25,6 +26,7 @@ public class Auction implements Runnable {
         this.noParticipants = 0;
         this.currentPrice = product.getStartPrice();
         this.highestBidder = null;
+        this.step = 0;
         this.maxBids = AuctionHouse.MAX_BIDS;
         this.status = new AuctionStatus();
     }
@@ -62,6 +64,10 @@ public class Auction implements Runnable {
         return noParticipants;
     }
 
+    public int getTimeRemaining() {
+        return AuctionHouse.MAX_AUCTION_DURATION - step;
+    }
+
     public void setCurrentPrice(double currentPrice) {
         this.currentPrice = currentPrice;
     }
@@ -79,13 +85,13 @@ public class Auction implements Runnable {
     }
 
     public String toString() {
-        return ID + " for product " + product.getID() + " participants: " + noParticipants;
+        return ID + " for product " + product.getID() + " participants: " + noParticipants +
+                " time remaining: " + getTimeRemaining();
     }
 
     @Override
     public void run() {
         lock.lock();
-        product.setInAuction();
         if (auctionHouse.getActiveAuctions().size() >= AuctionHouse.MAX_AUCTIONS) {
             try {
                 auctionHouseNotFull.await();
@@ -94,6 +100,7 @@ public class Auction implements Runnable {
             }
         }
         auctionHouse.addAuction(this);
+        product.setInAuction();
 
         System.err.println("\n<=> New auction opened for item:\n" + product.toString() + "\n");
         if (noParticipants < AuctionHouse.MIN_AUCTION_PARTICIPANTS) {
@@ -107,7 +114,7 @@ public class Auction implements Runnable {
         lock.unlock();
 
         System.err.println("\n<=> Auction " + ID + " has started\n");
-        int step = 0;
+
         while(maxBids > 0 && step < AuctionHouse.MAX_AUCTION_DURATION) {
             step++;
             try {

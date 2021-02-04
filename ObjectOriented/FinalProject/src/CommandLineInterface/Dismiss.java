@@ -4,10 +4,10 @@ import Main.Client;
 
 import java.security.InvalidParameterException;
 
-public class Whoami implements Command{
+public class Dismiss implements Command{
     @Override
     public void execute(Client client, String[] arguments) throws InvalidParameterException {
-        System.out.println(client.toString() + "\nAuctions won: " + client.getWonAuctions() +
-                "\nBalance: " + client.getCredit());
+        System.out.println("Broker " + client.getBroker().getName() + " dismissed!");
+        client.dismissBroker();
     }
 }

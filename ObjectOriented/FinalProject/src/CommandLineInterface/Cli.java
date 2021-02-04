@@ -1,5 +1,4 @@
 package CommandLineInterface;
-import Main.AuctionHouse;
 import Main.Client;
 import Main.Simulation;
 
@@ -9,17 +8,19 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 public class Cli {
-    private static HashMap<String, Command> commands = new HashMap<>();
+    private static final HashMap<String, Command> commands = new HashMap<>();
     static {
+        commands.put("help", (client, arguments) -> System.out.println(
+                "Commands: whoami | deposit | products | auctions | request | dismiss | enter | quit"));
         commands.put("products", new ListProducts());
         commands.put("whoami", new Whoami());
         commands.put("deposit", new Deposit());
         commands.put("request", new Request());
+        commands.put("dismiss", new Dismiss());
         commands.put("auctions", new ListAuctions());
         commands.put("enter", new EnterAuction());
     }
 
-    private final AuctionHouse auctionHouse = AuctionHouse.getINSTANCE();
     private final Client client;
     private final BufferedReader reader;
 
@@ -29,7 +30,8 @@ public class Cli {
     }
 
     public void run() throws IOException {
-        System.out.println("Commands: whoami | deposit | products | auctions | request | enter | quit");
+        commands.get("help").execute(client, null);
+        System.out.print(">");
         String cmd = reader.readLine();
         while (!cmd.equals("quit")) {
             String[] args = cmd.split(" ");
@@ -43,6 +45,7 @@ public class Cli {
             catch (InvalidParameterException e) {
                 System.out.println(e.getMessage());
             }
+            System.out.print(">");
             cmd = reader.readLine();
         }
         Simulation.end();

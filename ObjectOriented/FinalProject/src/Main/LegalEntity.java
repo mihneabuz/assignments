@@ -17,6 +17,7 @@ public class LegalEntity extends Client {
         super(name, address);
         this.capital = capital;
         this.company = Company.valueOf(company);
+        setCredit(capital);
     }
 
     @Override
@@ -25,6 +26,6 @@ public class LegalEntity extends Client {
     }
 
     public String toString() {
-        return super.toString() + " from " + company.toString();
+        return super.toString() + ", " + company.toString() + " Company";
     }
 }

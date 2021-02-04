@@ -12,25 +12,25 @@ public class Bot extends Client {
 
     @Override
     public void bid(double price) {
-        if (super.broker == null || !broker.isAuctionOpen() || broker.winning())
+        if (getBroker() == null || !getBroker().isAuctionOpen() || getBroker().winning())
             return;
         if (new Random().nextInt(100) > bidChance)
             return;
-        double currentPrice = broker.getCurrentPrice();
-        double newPrice = currentPrice + 20.0 + (new Random().nextInt(maxRaiseAmount));
+        double currentPrice = getBroker().getCurrentPrice();
+        double newPrice = currentPrice + 20.0 + ((float)new Random().nextInt(maxRaiseAmount * 100) / 100);
         if (newPrice <= getCredit())
-            broker.notifyBid(newPrice);
+            getBroker().notifyBid(newPrice);
         bidChance -= 1;
     }
 
     @Override
     public void enterAuction(Auction auction) {
         bidChance = new Random().nextInt(10) + 2;
-        maxRaiseAmount = new Random().nextInt(79) + 1;
-        setCredit(new Random().nextInt(maxRaiseAmount * 10) + 300);
-        if (broker == null)
+        maxRaiseAmount = new Random().nextInt(49) + 1;
+        setCredit(new Random().nextInt(maxRaiseAmount * 20) + 300);
+        if (getBroker() == null)
             return;
-        broker.setAuction(auction);
+        getBroker().setAuction(auction);
         auction.notifyNewParticipant(getName());
     }
 

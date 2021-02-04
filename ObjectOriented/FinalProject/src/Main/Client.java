@@ -4,7 +4,7 @@ public class Client {
     private int ID;
     private String name;
     private String address;
-    protected Broker broker;
+    private Broker broker;
     private double credit;
     private int participatedAuctions;
     private int wonAuctions;

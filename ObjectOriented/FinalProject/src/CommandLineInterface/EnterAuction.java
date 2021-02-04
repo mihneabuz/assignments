@@ -51,15 +51,21 @@ public class EnterAuction implements Command{
         double newPrice;
         double lastPrice = 0;
         double yourBid = 0;
+        boolean warned = false;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
             while (!auction.isFinished()) {
-                while (System.in.available() == 0) {
+                while (System.in.available() == 0 && !auction.isFinished()) {
                     newPrice = client.getBroker().getCurrentPrice();
                     if (newPrice != lastPrice) {
-                        System.out.println("New price: " + newPrice + (newPrice == yourBid ? " (your bid)" : ""));
+                        System.out.println("New price: " + String.format("%.2f" ,newPrice) +
+                                (newPrice == yourBid ? " (your bid)" : ""));
                         lastPrice = newPrice;
+                    }
+                    if (auction.getTimeRemaining() <= 10 && !warned) {
+                        System.out.println("Auction will end in less than 10 seconds!");
+                        warned = true;
                     }
                     try {
                         Thread.sleep(200);
@@ -67,26 +73,28 @@ public class EnterAuction implements Command{
                         e.printStackTrace();
                     }
                 }
-                reader.readLine();
-                System.out.print("Your bid: ");
-                String aux = reader.readLine();
-                if (aux.equals("q")) {
-                    System.out.println("Quit auction " + auction.getID());
-                    return;
-                }
 
-                yourBid = Double.parseDouble(aux);
-                if (yourBid > client.getCredit())
-                    System.out.println("Rejected. Not enough credit to bid");
-                else
-                    client.bid(yourBid);
+                if (!auction.isFinished()) {
+                    if (reader.readLine().equals("q")) {
+                        System.out.println("Quit auction " + auction.getID());
+                        return;
+                    }
+
+                    System.out.print("Your bid: ");
+                    String aux = reader.readLine();
+                    yourBid = Double.parseDouble(aux);
+                    if (yourBid > client.getCredit())
+                        System.out.println("Rejected. Not enough credit to bid");
+                    else
+                        client.bid(yourBid);
+                }
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.out.println("Auction finished\n");
+        System.out.println("Auction finished!");
         if (auction.getHighestBidder().is(client.getBroker())) {
             System.out.println("You won " + auction.getProduct().toString() + " for " + auction.getCurrentPrice());
             System.out.println("Available credit: " + client.getCredit());

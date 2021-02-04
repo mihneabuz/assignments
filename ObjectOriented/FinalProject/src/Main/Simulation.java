@@ -5,11 +5,11 @@ import java.util.Random;
 
 public class Simulation {
     private static boolean running = true;
-    private static final int MAX_PRODUCTS = 20;
-    private static final int MAX_CLIENTS = 20;
+    private static final int MAX_PRODUCTS = 40;
+    private static final int MAX_CLIENTS = 30;
     private static int lastID = 0;
     private static int lastEmployeeID = 0;
-    private static String[] namesPool = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin",
+    private static final String[] namesPool = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin",
                                                      "Huan", "Arnold", "Dragnea", "Becali", "Giovanni",
                                                      "Nicu", "Lili", "Dorian", "Mathias", "Petrica",
                                                      "Ionut", "Jhon", "Sergiu", "Jesus", "Florin",
@@ -44,7 +44,7 @@ public class Simulation {
             p = new ProductBuilder(types[c1])
                     .withID(lastID++)
                     .withName(names[c2])
-                    .withStartPrice(x.nextInt(200))
+                    .withStartPrice(x.nextInt(400) + 50)
                     .withArtist(artists[c3])
                     .withColors(colors[c4])
                     .withFurnitureType(furniture[c5])
@@ -66,7 +66,7 @@ public class Simulation {
         return new Broker(lastEmployeeID++, namesPool[new Random().nextInt(namesPool.length)]);
     }
 
-    public static Client generateRandomBot(AuctionHouse ah) {
+    public static Client generateRandomBot() {
         int c1 = new Random().nextInt(namesPool.length);
 
         String[] addresses = new String[]{"USA", "Africa", "Caransebes", "Vaslui", "Ardeal", "Rrrrusia", "Germoney",
@@ -120,7 +120,7 @@ public class Simulation {
             // create client bots
             if (nrClients < MAX_CLIENTS && seed.nextInt(100) > 95) {
                 nrClients++;
-                Client client = generateRandomBot(ah);
+                Client client = generateRandomBot();
                 new Thread(new Register(ah, client)).start();
             }
             // create brokers
@@ -152,8 +152,8 @@ public class Simulation {
             // bidding on open auctions and dismissing brokers on finished auctions
             for (int i = 0; i < ah.getClients().size(); i++) {
                 Client client = ah.getClients().get(i);
-                if (client instanceof Bot && seed.nextInt(100) > 80) {
-                    if (client.hasBroker() && client.broker.isAuctionFinished())
+                if (client instanceof Bot && seed.nextInt(100) > 60) {
+                    if (client.hasBroker() && client.getBroker().isAuctionFinished())
                         client.dismissBroker();
                     else
                         client.bid(0);
