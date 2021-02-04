@@ -1,6 +1,7 @@
 package CommandLineInterface;
 import Main.AuctionHouse;
 import Main.Client;
+import Main.Simulation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,12 +31,17 @@ public class Cli {
         while (!cmd.equals("quit")) {
             String[] args = cmd.split(" ");
             try {
-                commands.get(args[0]).execute(client, args);
+                Command command = commands.get(args[0]);
+                if (command != null)
+                    command.execute(client, args);
+                else
+                    System.out.println("Invalid Command");
             }
             catch (InvalidParameterException e) {
                 System.out.println(e.getMessage());
             }
             cmd = reader.readLine();
         }
+        Simulation.end();
     }
 }

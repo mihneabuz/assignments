@@ -77,9 +77,9 @@ public class Auction implements Runnable {
             }
         auctionHouse.addAuction(this);
         System.err.println("\n<=> New auction opened for item:\n" + product.toString() + "\n");
-        while (noParticipants < 3)
+        while (noParticipants < AuctionHouse.MIN_AUCTION_PARTICIPANTS)
             try {
-                Thread.sleep(50);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -90,7 +90,7 @@ public class Auction implements Runnable {
         while(maxBids > 0 && step < AuctionHouse.MAX_AUCTION_DURATION) {
             step++;
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

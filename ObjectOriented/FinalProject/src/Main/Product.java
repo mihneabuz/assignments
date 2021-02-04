@@ -51,12 +51,11 @@ public class Product {
     }
 
     public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append(String.format("Main.Product: %d\n%s\n", ID, name));
+        StringBuilder string = new StringBuilder(name);
         if (this.inAuction)
-            string.append(String.format("Currently in auction"));
+            string.append("\nCurrently in auction");
         else
-            string.append(String.format("Starting price %.2f", startPrice));
+            string.append(String.format("\nStarting price %.2f", startPrice));
         return string.toString();
     }
 }

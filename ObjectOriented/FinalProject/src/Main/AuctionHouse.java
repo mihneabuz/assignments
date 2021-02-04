@@ -8,8 +8,9 @@ public class AuctionHouse {
     private static AuctionHouse INSTANCE;
     public static final int PRODUCT_CAPACITY = 10;
     public static final int MAX_AUCTIONS = 5;
-    public static final int MAX_BIDS = 20;
-    public static final int MAX_AUCTION_DURATION = 60;
+    public static final int MIN_AUCTION_PARTICIPANTS = 3;
+    public static final int MAX_BIDS = 12;
+    public static final int MAX_AUCTION_DURATION = 120;
     private final ConcurrentHashMap<Integer, Product> products = new ConcurrentHashMap<>(PRODUCT_CAPACITY);
     private final ArrayList<Client> clients = new ArrayList<>();
     private final ArrayList<Broker> brokers = new ArrayList<>();
@@ -102,7 +103,7 @@ public class AuctionHouse {
 
     public void printProducts() {
         for (Product product : products.values())
-            System.out.println(product.toString());
+            System.out.println(product.toString() + "\n");
     }
 
     public void debug() {

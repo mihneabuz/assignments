@@ -23,6 +23,6 @@ public class Furniture extends Product {
     }
 
     public String toString() {
-        return String.format("%s furniture made out of %s\n", type, material) + super.toString();
+        return String.format("%s made out of %s | ", type, material) + super.toString();
     }
 }

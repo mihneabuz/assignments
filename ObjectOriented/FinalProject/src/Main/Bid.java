@@ -23,7 +23,7 @@ public class Bid implements Runnable {
             auction.setCurrentPrice(newBid);
             auction.setHighestBidder(broker);
             auction.step();
-            System.err.println("!! Main.Auction " + auction.getID() + ": new bid of " +
+            System.err.println("!! Auction " + auction.getID() + ": new bid of " +
                     String.format("%.2f", newBid) + " from " + broker.getClient().getName());
         }
         lock.unlock();

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Simulation {
+    private static boolean running = true;
     private static final int MAX_PRODUCTS = 10;
     private static final int MAX_CLIENTS = 15;
     private static int lastID = 0;
@@ -69,7 +70,7 @@ public class Simulation {
                                           "Greece", "Pastaland", "Croissant", "The Motherland", "Cazanesti"};
         int c2 = new Random().nextInt(addresses.length);
 
-        return new Bot(0, namesPool[c1] + " Main.Bot", addresses[c2]);
+        return new Bot(0, namesPool[c1] + " Bot", addresses[c2]);
     }
 
     public static Product getRandomProductForAuction(AuctionHouse auctionHouse) {
@@ -85,6 +86,10 @@ public class Simulation {
         return null;
     }
 
+    public static void end() {
+        running = false;
+    }
+
     public static void main(String[] args) throws InterruptedException {
         AuctionHouse ah = AuctionHouse.getINSTANCE();
 
@@ -96,7 +101,7 @@ public class Simulation {
         for (int i = 0; i < 3; i++)
             ah.addAdministrator(generateRandomAdministrator(ah));
 
-        while (true) {
+        while (running) {
 
             // login prompt
             if (step == 10)
@@ -144,7 +149,7 @@ public class Simulation {
             // bidding on open auctions and dismissing brokers on finished auctions
             for (int i = 0; i < ah.getClients().size(); i++) {
                 Client client = ah.getClients().get(i);
-                if (client instanceof Bot && seed.nextInt(100) > 50) {
+                if (client instanceof Bot && seed.nextInt(100) > 60) {
                     if (client.hasBroker() && client.broker.isAuctionFinished())
                         client.dismissBroker();
                     else
@@ -152,11 +157,11 @@ public class Simulation {
                 }
             }
 
-            if (step % 300 == 0)
+            if (step % 600 == 0)
                 ah.debug();
             step++;
-            Thread.sleep(200);
+            Thread.sleep(100);
         }
-
+        System.exit(1);
     }
 }

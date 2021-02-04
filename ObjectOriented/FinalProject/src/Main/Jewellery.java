@@ -23,7 +23,7 @@ public class Jewellery extends Product {
     }
 
     public String toString() {
-        return String.format("Main.Jewellery made of %s %s Gems\n", material, withGem ? "with" : "without")
+        return String.format("Jewellery made of %s %s Gems | ", material, withGem ? "with" : "without")
                 + super.toString();
     }
 }
