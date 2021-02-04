@@ -114,7 +114,7 @@ public class AuctionHouse {
     }
 
     public void debug() {
-        StringBuilder string = new StringBuilder("<= Main.Auction House Information =>\n");
+        StringBuilder string = new StringBuilder("<= Auction House Information =>\n");
         string.append("(p) Products: ");
         for (Product product : products.values())
             string.append(product.getID()).append(" ");

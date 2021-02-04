@@ -106,7 +106,7 @@ public class Auction implements Runnable {
         status.setOpen(true);
         lock.unlock();
 
-        System.err.println("\n<=> Main.Auction " + ID + " has started\n");
+        System.err.println("\n<=> Auction " + ID + " has started\n");
         int step = 0;
         while(maxBids > 0 && step < AuctionHouse.MAX_AUCTION_DURATION) {
             step++;
@@ -122,7 +122,7 @@ public class Auction implements Runnable {
         status.setFinished(true);
         auctionHouseNotFull.signal();
         if (highestBidder == null) {
-            System.err.println("\n<=> Auction " + ID + " finished: Main.Product not sold.\n");
+            System.err.println("\n<=> Auction " + ID + " finished: Product not sold.\n");
         }
         else {
             Client winner = highestBidder.getClient();
