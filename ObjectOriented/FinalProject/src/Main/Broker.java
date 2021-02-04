@@ -67,7 +67,7 @@ public class Broker extends Employee {
     }
 
     public String toString() {
-        return "Main.Broker " + super.toString() + (busy ? " (working on " + auction.getID() + ")" : " (waiting)");
+        return "Broker " + super.toString() + (busy ? " (working)" : " (waiting)");
     }
 
 }

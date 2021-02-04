@@ -17,7 +17,7 @@ public class Login implements Runnable {
     @Override
     public void run() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int choice = 0;
+        int choice;
         String name = null;
         String address = null;
 
@@ -51,7 +51,7 @@ public class Login implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            client = new Individual(0, name, address, birthdate);
+            client = new Individual(name, address, birthdate);
         }
         else {
             System.out.println("Please input your Company type:");
@@ -68,7 +68,7 @@ public class Login implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            client = new LegalEntity(0, name, address, capital, companyType);
+            client = new LegalEntity(name, address, capital, companyType);
         }
 
         new Register(auctionHouse, client).run();

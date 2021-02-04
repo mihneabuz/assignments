@@ -58,6 +58,10 @@ public class Auction implements Runnable {
         return highestBidder;
     }
 
+    public int getNoParticipants() {
+        return noParticipants;
+    }
+
     public void setCurrentPrice(double currentPrice) {
         this.currentPrice = currentPrice;
     }

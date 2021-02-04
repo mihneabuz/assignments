@@ -6,8 +6,8 @@ public class Bot extends Client {
     private int bidChance;
     private int maxRaiseAmount;
 
-    public Bot(int ID, String name, String address) {
-        super(ID, name, address);
+    public Bot(String name, String address) {
+        super(name, address);
     }
 
     @Override

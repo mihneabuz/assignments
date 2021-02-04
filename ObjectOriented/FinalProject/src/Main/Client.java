@@ -12,8 +12,8 @@ public class Client {
     public Client() {
     }
 
-    public Client(int ID, String name, String address) {
-        this.ID = ID;
+    public Client(String name, String address) {
+        this.ID = 0;
         this.name = name;
         this.address = address;
         this.credit = 0;
@@ -51,7 +51,7 @@ public class Client {
             broker = ah.requestBroker();
             broker.setClient(this);
         } catch (NoBrokersAvailableException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

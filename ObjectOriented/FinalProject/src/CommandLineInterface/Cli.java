@@ -14,6 +14,9 @@ public class Cli {
         commands.put("products", new ListProducts());
         commands.put("whoami", new Whoami());
         commands.put("deposit", new Deposit());
+        commands.put("request", new Request());
+        commands.put("auctions", new ListAuctions());
+        commands.put("enter", new EnterAuction());
     }
 
     private final AuctionHouse auctionHouse = AuctionHouse.getINSTANCE();
@@ -26,7 +29,7 @@ public class Cli {
     }
 
     public void run() throws IOException {
-        System.out.println("Commands: whoami | deposit | products | ... | quit");
+        System.out.println("Commands: whoami | deposit | products | auctions | request | enter | quit");
         String cmd = reader.readLine();
         while (!cmd.equals("quit")) {
             String[] args = cmd.split(" ");

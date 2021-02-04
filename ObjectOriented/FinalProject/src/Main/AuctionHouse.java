@@ -83,6 +83,13 @@ public class AuctionHouse {
         auctions.add(auction);
     }
 
+    public Auction getAuction(int auctionID) throws InvalidAuctionIDException {
+        for (int i = 0; i < auctions.size(); i ++)
+            if (auctions.get(i).getID() == auctionID)
+                return auctions.get(i);
+        throw new InvalidAuctionIDException(String.format("Auction %d not found", auctionID));
+    }
+
     public ArrayList<Auction> getAuctions() {
         return auctions;
     }
@@ -103,7 +110,7 @@ public class AuctionHouse {
 
     public void printProducts() {
         for (Product product : products.values())
-            System.out.println(product.toString() + "\n");
+            System.out.println(product.toString() + product.getStatus() + "\n");
     }
 
     public void debug() {

@@ -47,6 +47,6 @@ public class Administrator extends Employee {
     }
 
     public String toString() {
-        return "Main.Administrator " + super.toString();
+        return "Administrator " + super.toString();
     }
 }

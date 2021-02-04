@@ -23,4 +23,8 @@ public class Employee {
     public String toString() {
         return this.name;
     }
+
+    public boolean is(Employee employee) {
+        return this.ID == employee.getID();
+    }
 }

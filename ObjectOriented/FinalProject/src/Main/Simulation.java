@@ -11,7 +11,7 @@ public class Simulation {
     private static int lastEmployeeID = 0;
     private static String[] namesPool = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin",
                                                      "Huan", "Arnold", "Dragnea", "Becali", "Giovanni",
-                                                     "Nicu", "Lili", "Paulette", "Mathias", "Petrica",
+                                                     "Nicu", "Lili", "Dorian", "Mathias", "Petrica",
                                                      "Ionut", "Jhon", "Sergiu", "Jesus", "Florin",
                                                      "Obama", "Trump", "SleepyJoe", "Johanis", "Jador",
                                                      "Veorica", "Firea", "Jaxana", "Mary", "Karen"};
@@ -22,11 +22,12 @@ public class Simulation {
         String[] types = new String[]{"PAINTING", "FURNITURE", "JEWELLERY"};
         int c1 = x.nextInt(3);
 
-        String[] names = new String[]{"John", "A Stary Night", "Van Gogh", "Mone Lisa", "Hatz Jhonule", "Antilopa",
-                                      "Ikea Table", "Fotoliul", "Inelush", "EXPLOSIONS?", "$GME", "HOLD"};
+        String[] names = new String[]{"John", "A Stary Night", "Van Gogh", "Mone Lisa", "Hatz", "Antilopa",
+                                      "Ikea Table", "Fotoliul", "Inelush", "EXPLOSIONS?", "$GME", "HOLD",
+                                      "Gazella", "Televizorul", "Buddha", "V10", "V12", "Axon", "Exon"};
         int c2 = x.nextInt(names.length);
 
-        String[] artists = new String[]{"Aurel", "Lili", "danutzul", "Jhonul", "LorinFortuna", "VadimTudor", "DFV"};
+        String[] artists = new String[]{"Aurel", "Lili", "Danutzul", "Jhonul", "LorinFortuna", "VadimTudor", "DFV"};
         int c3 = x.nextInt(artists.length);
 
         String[] colors = new String[]{"TEMPERA", "OIL", "ACRYLIC"};
@@ -35,7 +36,7 @@ public class Simulation {
         String[] furniture = new String[]{"Masa", "Fotoliu", "Canapea", "Dulap", "Sifonier"};
         int c5 = x.nextInt(furniture.length);
 
-        String[] materials = new String[]{"Haur", "Argint", "Lemn", "PVC", "Peatra", "Platinium", "Fer"};
+        String[] materials = new String[]{"Aur", "Argint", "Lemn", "PVC", "Peatra", "Platinium", "Fier"};
         int c6 = x.nextInt(materials.length);
 
         Product p;
@@ -72,7 +73,7 @@ public class Simulation {
                                           "Greece", "Pastaland", "Croissant", "The Motherland", "Cazanesti"};
         int c2 = new Random().nextInt(addresses.length);
 
-        return new Bot(0, namesPool[c1] + " Bot", addresses[c2]);
+        return new Bot(namesPool[c1] + " Bot", addresses[c2]);
     }
 
     public static Product getRandomProductForAuction(AuctionHouse auctionHouse) {
@@ -123,7 +124,7 @@ public class Simulation {
                 new Thread(new Register(ah, client)).start();
             }
             // create brokers
-            if (nrBrokers < MAX_CLIENTS && seed.nextInt(100) > 80) {
+            if (nrBrokers < MAX_CLIENTS + 1 && seed.nextInt(100) > 60) {
                 nrBrokers++;
                 Broker broker = generateRandomBroker();
                 ah.addBroker(broker);
@@ -151,7 +152,7 @@ public class Simulation {
             // bidding on open auctions and dismissing brokers on finished auctions
             for (int i = 0; i < ah.getClients().size(); i++) {
                 Client client = ah.getClients().get(i);
-                if (client instanceof Bot && seed.nextInt(100) > 60) {
+                if (client instanceof Bot && seed.nextInt(100) > 80) {
                     if (client.hasBroker() && client.broker.isAuctionFinished())
                         client.dismissBroker();
                     else

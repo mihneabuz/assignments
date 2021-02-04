@@ -13,8 +13,8 @@ public class LegalEntity extends Client {
         super();
     }
 
-    public LegalEntity(int ID, String name, String address, double capital, String company) {
-        super(ID, name, address);
+    public LegalEntity(String name, String address, double capital, String company) {
+        super(name, address);
         this.capital = capital;
         this.company = Company.valueOf(company);
     }
