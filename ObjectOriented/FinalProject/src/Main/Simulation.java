@@ -5,14 +5,16 @@ import java.util.Random;
 
 public class Simulation {
     private static boolean running = true;
-    private static final int MAX_PRODUCTS = 10;
-    private static final int MAX_CLIENTS = 15;
+    private static final int MAX_PRODUCTS = 20;
+    private static final int MAX_CLIENTS = 20;
     private static int lastID = 0;
     private static int lastEmployeeID = 0;
     private static String[] namesPool = new String[]{"Franz", "Hanz", "Joseph", "Gigel", "Martin",
                                                      "Huan", "Arnold", "Dragnea", "Becali", "Giovanni",
                                                      "Nicu", "Lili", "Paulette", "Mathias", "Petrica",
-                                                     "Ionut", "Jhon", "Sergiu", "Jesus", "Florin"};
+                                                     "Ionut", "Jhon", "Sergiu", "Jesus", "Florin",
+                                                     "Obama", "Trump", "SleepyJoe", "Johanis", "Jador",
+                                                     "Veorica", "Firea", "Jaxana", "Mary", "Karen"};
 
     public static Product generateRandomProduct() {
         Random x = new Random();

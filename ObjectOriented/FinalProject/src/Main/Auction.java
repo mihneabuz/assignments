@@ -1,5 +1,9 @@
 package Main;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Auction implements Runnable {
     private final AuctionHouse auctionHouse;
     private final int ID;
@@ -9,6 +13,10 @@ public class Auction implements Runnable {
     private Broker highestBidder;
     private int maxBids;
     private final AuctionStatus status;
+
+    static Lock lock = new ReentrantLock();
+    static Condition auctionHouseNotFull = lock.newCondition();
+    Condition enoughParticipants = lock.newCondition();
 
     public Auction(int ID, Product product, AuctionHouse auctionHouse) {
         this.auctionHouse = auctionHouse;
@@ -34,8 +42,12 @@ public class Auction implements Runnable {
     }
 
     public synchronized void notifyNewParticipant(String name) {
+        lock.lock();
         System.err.println("<+> " + name + " has entered auction " + this.getID());
         noParticipants++;
+        if (noParticipants >= AuctionHouse.MIN_AUCTION_PARTICIPANTS)
+            enoughParticipants.signal();
+        lock.unlock();
     }
 
     public int getID() {
@@ -68,38 +80,45 @@ public class Auction implements Runnable {
 
     @Override
     public void run() {
+        lock.lock();
         product.setInAuction();
-        while (auctionHouse.getActiveAuctions().size() >= AuctionHouse.MAX_AUCTIONS)
+        if (auctionHouse.getActiveAuctions().size() >= AuctionHouse.MAX_AUCTIONS) {
             try {
-                Thread.sleep(50);
+                auctionHouseNotFull.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
         auctionHouse.addAuction(this);
+
         System.err.println("\n<=> New auction opened for item:\n" + product.toString() + "\n");
-        while (noParticipants < AuctionHouse.MIN_AUCTION_PARTICIPANTS)
+        if (noParticipants < AuctionHouse.MIN_AUCTION_PARTICIPANTS) {
             try {
-                Thread.sleep(100);
+                enoughParticipants.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
         status.setOpen(true);
-        System.err.println("\n<=> Main.Auction " + ID + " has started\n");
+        lock.unlock();
 
+        System.err.println("\n<=> Main.Auction " + ID + " has started\n");
         int step = 0;
         while(maxBids > 0 && step < AuctionHouse.MAX_AUCTION_DURATION) {
             step++;
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
+        lock.lock();
         status.setOpen(false);
         status.setFinished(true);
+        auctionHouseNotFull.signal();
         if (highestBidder == null) {
-            System.err.println("\n<=> Main.Auction " + ID + " finished: Main.Product not sold.\n");
+            System.err.println("\n<=> Auction " + ID + " finished: Main.Product not sold.\n");
         }
         else {
             Client winner = highestBidder.getClient();
@@ -110,11 +129,12 @@ public class Auction implements Runnable {
             winner.setWonAuctions(winner.getWonAuctions() + 1);
             highestBidder.setCommission(highestBidder.getCommission() + currentPrice * winner.getCommission());
 
-            System.err.println("\n<=> Main.Auction " + ID + " finished: Sold to " + status.getWinner().getName() +
+            System.err.println("\n<=> Auction " + ID + " finished: Sold to " + status.getWinner().getName() +
                                 " for " + String.format("%.2f", currentPrice) + "\n");
         }
         Administrator admin = auctionHouse.getAdministrator();
         new Thread(new Delisting(admin, product)).start();
+        lock.unlock();
     }
 
 }

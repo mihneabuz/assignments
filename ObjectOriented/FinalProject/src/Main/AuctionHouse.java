@@ -10,7 +10,7 @@ public class AuctionHouse {
     public static final int MAX_AUCTIONS = 5;
     public static final int MIN_AUCTION_PARTICIPANTS = 3;
     public static final int MAX_BIDS = 12;
-    public static final int MAX_AUCTION_DURATION = 120;
+    public static final int MAX_AUCTION_DURATION = 60;
     private final ConcurrentHashMap<Integer, Product> products = new ConcurrentHashMap<>(PRODUCT_CAPACITY);
     private final ArrayList<Client> clients = new ArrayList<>();
     private final ArrayList<Broker> brokers = new ArrayList<>();
@@ -113,7 +113,7 @@ public class AuctionHouse {
             string.append(product.getID()).append(" ");
         string.append("\n(A) Open auctions: ");
         for (Auction auction : getActiveAuctions())
-            string.append("\n(a) Main.Auction ").append(auction.toString());
+            string.append("\n(a) Auction ").append(auction.toString());
         string.append("\n\n&Admins: ");
         for (Administrator admin : admins)
             string.append("\n").append(admin.toString());
