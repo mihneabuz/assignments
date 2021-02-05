@@ -62,18 +62,18 @@ public class Client {
         broker = null;
     }
 
-    public double requestCurrentPrice() {
-        if (broker == null)
-            return -1;
-        return broker.getCurrentPrice();
-    }
-
     public void enterAuction(Auction auction) {
         if (broker == null)
             return;
         broker.setAuction(auction);
         auction.notifyNewParticipant(name);
         participatedAuctions += 1;
+    }
+
+    public double requestCurrentPrice() {
+        if (broker == null)
+            return -1;
+        return broker.getCurrentPrice();
     }
 
     public void bid(double price) {
@@ -99,6 +99,6 @@ public class Client {
     }
 
     public String toString() {
-        return "(" + ID + ")" + name + " from " + address;
+        return "(" + ID + ") " + name + " from " + address;
     }
 }

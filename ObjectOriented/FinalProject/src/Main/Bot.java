@@ -11,6 +11,18 @@ public class Bot extends Client {
     }
 
     @Override
+    public void enterAuction(Auction auction) {
+        assert auction != null;
+        bidChance = new Random().nextInt(10) + 2;
+        maxRaiseAmount = new Random().nextInt(49) + 1;
+        setCredit(new Random().nextInt(maxRaiseAmount * 20) + 300);
+        if (getBroker() == null)
+            return;
+        getBroker().setAuction(auction);
+        auction.notifyNewParticipant(getName());
+    }
+
+    @Override
     public void bid(double price) {
         if (getBroker() == null || !getBroker().isAuctionOpen() || getBroker().winning())
             return;
@@ -21,18 +33,6 @@ public class Bot extends Client {
         if (newPrice <= getCredit())
             getBroker().notifyBid(newPrice);
         bidChance -= 1;
-    }
-
-    @Override
-    public void enterAuction(Auction auction) {
-        assert auction != null;
-        bidChance = new Random().nextInt(10) + 2;
-        maxRaiseAmount = new Random().nextInt(49) + 1;
-        setCredit(new Random().nextInt(maxRaiseAmount * 20) + 300);
-        if (getBroker() == null)
-            return;
-        getBroker().setAuction(auction);
-        auction.notifyNewParticipant(getName());
     }
 
     @Override

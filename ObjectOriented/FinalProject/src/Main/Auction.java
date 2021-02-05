@@ -43,7 +43,7 @@ public class Auction implements Runnable {
         return currentPrice;
     }
 
-    public synchronized void notifyNewParticipant(String name) {
+    public void notifyNewParticipant(String name) {
         lock.lock();
         System.err.println("<+> " + name + " has entered auction " + this.getID());
         noParticipants++;

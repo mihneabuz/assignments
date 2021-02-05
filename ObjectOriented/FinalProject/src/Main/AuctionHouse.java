@@ -9,12 +9,12 @@ public class AuctionHouse {
     public static final int PRODUCT_CAPACITY = 10;
     public static final int MAX_AUCTIONS = 5;
     public static final int MIN_AUCTION_PARTICIPANTS = 3;
-    public static final int MAX_BIDS = 18;
+    public static final int MAX_BIDS = 20;
     public static final int MAX_AUCTION_DURATION = 60;
     private final ConcurrentHashMap<Integer, Product> products = new ConcurrentHashMap<>(PRODUCT_CAPACITY);
     private final ArrayList<Client> clients = new ArrayList<>();
     private final ArrayList<Broker> brokers = new ArrayList<>();
-    private final ArrayList<Administrator> admins = new ArrayList<>(PRODUCT_CAPACITY);
+    private final ArrayList<Administrator> admins = new ArrayList<>();
     private final ArrayList<Auction> auctions = new ArrayList<>();
     private int lastClientID = 1;
     private int lastAuctionID = 1;
@@ -103,6 +103,16 @@ public class AuctionHouse {
 
     public int nextAuctionID() {
         return lastAuctionID++;
+    }
+
+    public String toString() {
+        return String.format("""
+                        Auction House
+                        Products Capacity: %d
+                        Maximum Ongoing Auctions: %d
+                        Minimum Participants to start: %d
+                        Maximum Auction Duration: %d seconds""",
+                PRODUCT_CAPACITY, MAX_AUCTIONS, MIN_AUCTION_PARTICIPANTS, MAX_AUCTION_DURATION);
     }
 
     public void printProducts() {

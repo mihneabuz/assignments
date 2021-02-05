@@ -1,4 +1,5 @@
 package CommandLineInterface;
+import Main.AuctionHouse;
 import Main.Client;
 import Main.Simulation;
 
@@ -10,8 +11,7 @@ import java.util.HashMap;
 public class CommandLineInterface {
     private static final HashMap<String, Command> commands = new HashMap<>();
     static {
-        commands.put("help", (client, arguments) -> System.out.println(
-                "Commands: whoami | deposit | products | auctions | request | dismiss | enter | quit"));
+        commands.put("host", (client, arguments) -> System.out.println(AuctionHouse.getINSTANCE().toString()));
         commands.put("products", new ListProducts());
         commands.put("whoami", new Whoami());
         commands.put("deposit", new Deposit());
@@ -19,6 +19,8 @@ public class CommandLineInterface {
         commands.put("dismiss", new Dismiss());
         commands.put("auctions", new ListAuctions());
         commands.put("enter", new EnterAuction());
+        commands.put("help", (client, arguments) -> System.out.println(
+                "Commands: " + String.join(" | ", commands.keySet())));
     }
 
     private final Client client;

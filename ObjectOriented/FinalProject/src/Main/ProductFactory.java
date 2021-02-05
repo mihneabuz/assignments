@@ -22,6 +22,6 @@ public class ProductFactory {
                         builder.getMaterial(),
                         builder.isWithGem());
         }
-        throw new InvalidProductException("Main.Product type invalid");
+        throw new InvalidProductException("Product type invalid");
     }
 }

@@ -97,11 +97,13 @@ public class EnterAuction implements Command{
 
         System.out.println("Auction finished!");
         if (auction.getHighestBidder().is(client.getBroker())) {
-            System.out.println("You won " + auction.getProduct().toString() + " for " + auction.getCurrentPrice());
+            System.out.println("You won " + auction.getProduct().toString() +
+                    String.format(" for %.2f", auction.getCurrentPrice()));
             System.out.println("Available credit: " + client.getCredit());
         }
         else {
-            System.out.println("Sold " + auction.getProduct().toString() + " for " + auction.getCurrentPrice());
+            System.out.println("Sold " + auction.getProduct().toString() +
+                    String.format(" for %.2f", auction.getCurrentPrice()));
         }
     }
 }
