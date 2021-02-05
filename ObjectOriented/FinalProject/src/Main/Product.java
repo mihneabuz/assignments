@@ -5,11 +5,13 @@ public class Product {
     private String name;
     private double startPrice;
     private boolean inAuction;
+    private boolean inQueueForAuction;
     private double soldPrice;
 
     public Product() {
         this.inAuction = false;
-        this.soldPrice = Integer.MIN_VALUE;
+        this.inQueueForAuction = false;
+        this.soldPrice = 0;
     }
 
     public Product(int ID, String name, double startPrice) {
@@ -17,7 +19,7 @@ public class Product {
         this.name = name;
         this.startPrice = startPrice;
         this.inAuction = false;
-        this.soldPrice = Integer.MIN_VALUE;
+        this.soldPrice = 0;
     }
 
     public void setID(int ID) {
@@ -38,6 +40,14 @@ public class Product {
 
     public boolean isInAuction() {
         return inAuction;
+    }
+
+    public void setInQueueForAuction(boolean inQueueForAuction) {
+        this.inQueueForAuction = inQueueForAuction;
+    }
+
+    public boolean isInQueueForAuction() {
+        return inQueueForAuction;
     }
 
     public int getID() {

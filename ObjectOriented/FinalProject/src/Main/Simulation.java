@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Simulation {
     private static boolean running = true;
-    private static final int MAX_PRODUCTS = 40;
+    private static final int MAX_PRODUCTS = 100;
     private static final int MAX_CLIENTS = 30;
     private static int lastID = 0;
     private static int lastEmployeeID = 0;
@@ -79,10 +79,10 @@ public class Simulation {
     public static Product getRandomProductForAuction(AuctionHouse auctionHouse) {
         ArrayList<Product> products = auctionHouse.getProducts();
         int i = new Random().nextInt(products.size());
-        if (!products.get(i).isInAuction())
+        if (!products.get(i).isInQueueForAuction())
             return products.get(i);
         while (i < 2 * products.size()) {
-            if (!products.get(i % products.size()).isInAuction())
+            if (!products.get(i % products.size()).isInQueueForAuction())
                 return products.get(i % products.size());
             i++;
         }
@@ -130,9 +130,9 @@ public class Simulation {
                 ah.addBroker(broker);
             }
             // start auctions for random products
-            if (ah.getProducts().size() > 0 && seed.nextInt(100) > 95) {
+            if (ah.getProducts().size() > 0 && seed.nextInt(100) > 96) {
                 Product p = getRandomProductForAuction(ah);
-                if (p != null) {
+                if (p != null && !p.isInAuction()) {
                     Administrator admin = ah.getAdministrator();
                     admin.openAuction(p);
                 }

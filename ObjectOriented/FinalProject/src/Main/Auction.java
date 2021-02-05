@@ -92,6 +92,7 @@ public class Auction implements Runnable {
     @Override
     public void run() {
         lock.lock();
+        product.setInQueueForAuction(true);
         if (auctionHouse.getActiveAuctions().size() >= AuctionHouse.MAX_AUCTIONS) {
             try {
                 auctionHouseNotFull.await();
@@ -127,9 +128,6 @@ public class Auction implements Runnable {
         }
 
         lock.lock();
-        status.setOpen(false);
-        status.setFinished(true);
-        auctionHouseNotFull.signal();
         if (highestBidder == null)
             System.err.println("\n<=> Auction " + ID + " finished: Product not sold.\n");
         else {
@@ -145,7 +143,11 @@ public class Auction implements Runnable {
 
             System.err.println("\n<=> Auction " + ID + " finished: Sold to " + status.getWinner().getName() +
                                 " for " + String.format("%.2f", currentPrice) + "\n");
+
         }
+        status.setOpen(false);
+        status.setFinished(true);
+        auctionHouseNotFull.signal();
         Administrator admin = auctionHouse.getAdministrator();
         new Thread(new Delisting(admin, product)).start();
         lock.unlock();

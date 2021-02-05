@@ -9,7 +9,7 @@ public class AuctionHouse {
     public static final int PRODUCT_CAPACITY = 10;
     public static final int MAX_AUCTIONS = 5;
     public static final int MIN_AUCTION_PARTICIPANTS = 3;
-    public static final int MAX_BIDS = 20;
+    public static final int MAX_BIDS = 18;
     public static final int MAX_AUCTION_DURATION = 60;
     private final ConcurrentHashMap<Integer, Product> products = new ConcurrentHashMap<>(PRODUCT_CAPACITY);
     private final ArrayList<Client> clients = new ArrayList<>();

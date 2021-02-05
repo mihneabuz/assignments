@@ -30,11 +30,6 @@ public class Administrator extends Employee {
 
     public void removeProduct(Product p) {
         lock.lock();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         Product aux = auctionHouse.removeProduct(p.getID());
         notFull.signal();
         assert aux != null;
