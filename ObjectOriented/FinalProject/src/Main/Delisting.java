@@ -1,8 +1,8 @@
 package Main;
 
 public class Delisting implements Runnable {
-    private Administrator admin;
-    private Product product;
+    private final Administrator admin;
+    private final Product product;
 
     public Delisting(Administrator admin, Product product) {
         this.admin = admin;

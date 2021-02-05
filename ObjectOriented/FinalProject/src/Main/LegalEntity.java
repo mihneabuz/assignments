@@ -20,6 +20,14 @@ public class LegalEntity extends Client {
         setCredit(capital);
     }
 
+    public double getCapital() {
+        return capital;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
     @Override
     public double getCommission() {
         return (company == Company.SRL) ? 0.30 : 0.25;

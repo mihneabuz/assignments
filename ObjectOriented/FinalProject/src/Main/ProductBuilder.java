@@ -1,7 +1,7 @@
 package Main;
 
 public class ProductBuilder {
-    private String TYPE;
+    private final String TYPE;
     private int ID;
     private String name;
     private double startPrice;

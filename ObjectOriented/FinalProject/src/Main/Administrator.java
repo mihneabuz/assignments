@@ -6,7 +6,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Administrator extends Employee {
     public AuctionHouse auctionHouse;
-    private Auction auction;
     private final Lock lock = new ReentrantLock();
     Condition notFull = lock.newCondition();
 
@@ -20,6 +19,7 @@ public class Administrator extends Employee {
         try {
             if (auctionHouse.getProducts().size() >= AuctionHouse.PRODUCT_CAPACITY)
                 notFull.await();
+            assert auctionHouse.getProducts().size() >= AuctionHouse.PRODUCT_CAPACITY;
             auctionHouse.addProduct(p);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -42,7 +42,7 @@ public class Administrator extends Employee {
     }
 
     public void openAuction(Product product) {
-        auction = new Auction(auctionHouse.nextAuctionID(), product, auctionHouse);
+        Auction auction = new Auction(auctionHouse.nextAuctionID(), product, auctionHouse);
         new Thread(auction).start();
     }
 

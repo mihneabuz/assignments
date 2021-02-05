@@ -4,9 +4,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Bid implements Runnable {
-    private Auction auction;
-    private Broker broker;
-    private double newBid;
+    private final Auction auction;
+    private final Broker broker;
+    private final double newBid;
     Lock lock = new ReentrantLock();
 
     public Bid(Auction auction, Broker broker, double bidAmount) {

@@ -1,8 +1,8 @@
 package Main;
 
 public class Listing implements Runnable {
-    private Administrator admin;
-    private Product product;
+    private final Administrator admin;
+    private final Product product;
 
     public Listing(Administrator admin, Product product) {
         this.admin = admin;

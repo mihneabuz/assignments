@@ -3,13 +3,11 @@ package Main;
 public class Product {
     private int ID;
     private String name;
-    private boolean onAuction;
     private double startPrice;
     private boolean inAuction;
     private double soldPrice;
 
     public Product() {
-        this.onAuction = false;
         this.inAuction = false;
         this.soldPrice = Integer.MIN_VALUE;
     }
@@ -48,6 +46,10 @@ public class Product {
 
     public double getStartPrice() {
         return startPrice;
+    }
+
+    public void setSoldPrice(double soldPrice) {
+        this.soldPrice = soldPrice;
     }
 
     public String toString() {

@@ -55,10 +55,6 @@ public class AuctionHouse {
         brokers.add(broker);
     }
 
-    public Product getProduct(int i) {
-        return products.get(i);
-    }
-
     public ArrayList<Product> getProducts() {
         return new ArrayList<>(products.values());
     }
@@ -81,6 +77,7 @@ public class AuctionHouse {
 
     public void addAuction(Auction auction) {
         auctions.add(auction);
+        assert auctions.size() <= AuctionHouse.MAX_AUCTIONS;
     }
 
     public Auction getAuction(int auctionID) throws InvalidAuctionIDException {

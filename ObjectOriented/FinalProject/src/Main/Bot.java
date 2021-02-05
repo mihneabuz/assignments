@@ -25,6 +25,7 @@ public class Bot extends Client {
 
     @Override
     public void enterAuction(Auction auction) {
+        assert auction != null;
         bidChance = new Random().nextInt(10) + 2;
         maxRaiseAmount = new Random().nextInt(49) + 1;
         setCredit(new Random().nextInt(maxRaiseAmount * 20) + 300);

@@ -1,8 +1,8 @@
 package Main;
 
 public class Register implements Runnable {
-    private AuctionHouse auctionHouse;
-    private Client client;
+    private final AuctionHouse auctionHouse;
+    private final Client client;
 
     public Register(AuctionHouse ah, Client client) {
         this.auctionHouse = ah;

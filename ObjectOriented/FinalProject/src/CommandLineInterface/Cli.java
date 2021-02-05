@@ -30,6 +30,9 @@ public class Cli {
     }
 
     public void run() throws IOException {
+        assert client != null;
+        assert reader != null;
+        assert !commands.isEmpty();
         commands.get("help").execute(client, null);
         System.out.print(">");
         String cmd = reader.readLine();

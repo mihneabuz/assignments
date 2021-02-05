@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Login implements Runnable {
-    private AuctionHouse auctionHouse;
-    private Client client;
+    private final AuctionHouse auctionHouse;
 
     public Login(AuctionHouse auctionHouse) {
         this.auctionHouse = auctionHouse;
@@ -43,6 +42,7 @@ public class Login implements Runnable {
             e.printStackTrace();
         }
 
+        Client client;
         if (choice == 1) {
             System.out.println("Please input your birthdate:");
             String birthdate = null;

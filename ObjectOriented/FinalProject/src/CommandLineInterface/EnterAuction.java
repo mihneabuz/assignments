@@ -12,6 +12,7 @@ import java.security.InvalidParameterException;
 public class EnterAuction implements Command{
     @Override
     public void execute(Client client, String[] arguments) throws InvalidParameterException {
+        assert client != null;
         if (!client.hasBroker()) {
             System.out.println("You have no broker assigned currently");
             return;
@@ -57,7 +58,7 @@ public class EnterAuction implements Command{
         try {
             while (!auction.isFinished()) {
                 while (System.in.available() == 0 && !auction.isFinished()) {
-                    newPrice = client.getBroker().getCurrentPrice();
+                    newPrice = client.requestCurrentPrice();
                     if (newPrice != lastPrice) {
                         System.out.println("New price: " + String.format("%.2f" ,newPrice) +
                                 (newPrice == yourBid ? " (your bid)" : ""));

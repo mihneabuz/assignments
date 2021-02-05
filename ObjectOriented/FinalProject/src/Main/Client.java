@@ -86,6 +86,10 @@ public class Client {
         return wonAuctions;
     }
 
+    public int getParticipatedAuctions() {
+        return participatedAuctions;
+    }
+
     public void setWonAuctions(int wonAuctions) {
         this.wonAuctions = wonAuctions;
     }
@@ -95,6 +99,6 @@ public class Client {
     }
 
     public String toString() {
-        return name + " from " + address;
+        return "(" + ID + ")" + name + " from " + address;
     }
 }

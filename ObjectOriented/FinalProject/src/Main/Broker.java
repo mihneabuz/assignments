@@ -29,7 +29,7 @@ public class Broker extends Employee {
 
     public void setClient(Client client) {
         this.client = client;
-        this.busy = true;
+        setBusy();
     }
 
     public Client getClient() {

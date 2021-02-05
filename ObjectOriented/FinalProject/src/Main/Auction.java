@@ -99,6 +99,7 @@ public class Auction implements Runnable {
                 e.printStackTrace();
             }
         }
+        assert auctionHouse.getActiveAuctions().size() >= AuctionHouse.MAX_AUCTIONS;
         auctionHouse.addAuction(this);
         product.setInAuction();
 
@@ -110,6 +111,7 @@ public class Auction implements Runnable {
                 e.printStackTrace();
             }
         }
+        assert noParticipants < AuctionHouse.MIN_AUCTION_PARTICIPANTS;
         status.setOpen(true);
         lock.unlock();
 
@@ -128,10 +130,11 @@ public class Auction implements Runnable {
         status.setOpen(false);
         status.setFinished(true);
         auctionHouseNotFull.signal();
-        if (highestBidder == null) {
+        if (highestBidder == null)
             System.err.println("\n<=> Auction " + ID + " finished: Product not sold.\n");
-        }
         else {
+            product.setSoldPrice(currentPrice);
+
             Client winner = highestBidder.getClient();
             status.setWinner(winner);
             status.setBroker(highestBidder);
