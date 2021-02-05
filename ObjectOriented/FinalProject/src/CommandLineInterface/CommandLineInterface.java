@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
-public class Cli {
+public class CommandLineInterface {
     private static final HashMap<String, Command> commands = new HashMap<>();
     static {
         commands.put("help", (client, arguments) -> System.out.println(
@@ -24,7 +24,7 @@ public class Cli {
     private final Client client;
     private final BufferedReader reader;
 
-    public Cli(Client client, BufferedReader reader) {
+    public CommandLineInterface(Client client, BufferedReader reader) {
         this.client = client;
         this.reader = reader;
     }

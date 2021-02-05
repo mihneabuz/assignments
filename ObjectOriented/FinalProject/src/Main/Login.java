@@ -1,6 +1,6 @@
 package Main;
 
-import CommandLineInterface.Cli;
+import CommandLineInterface.CommandLineInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -74,9 +74,9 @@ public class Login implements Runnable {
         new Register(auctionHouse, client).run();
         System.out.println("Registered user " + client.toString() + "\n\nWelcome!");
 
-        Cli cli = new Cli(client, reader);
+        CommandLineInterface commandLineInterface = new CommandLineInterface(client, reader);
         try {
-            cli.run();
+            commandLineInterface.run();
         } catch (IOException e) {
             e.printStackTrace();
         }
