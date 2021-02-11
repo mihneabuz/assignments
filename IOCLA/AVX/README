@@ -1,0 +1,31 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+AVX
+
+Aceasta este a doua oara cand incarc tema, si de data asta am decis sa ma axez strict pe
+performanta. Codul este mai comprimat dar mai greu de citit. De asemenea nu am mai tratat
+cazul cand n nu este divizibil cu 8.
+
+vector_c.c
+Folosesc un vector sum pentru a suma elementele in primul loop, dupa care il adaug la
+sqrt(C) in al doilea loop si il scriu in D. Am lucrat mult cu compiler explorer pentru
+a gasii modul optim de a scrie codul insa parametrul de compilator -O0 face acest lucru
+foarte dificil si dupa o vreme m-am dat batut sa ma mai "lupt cu compilatorul". Am
+observat ca keyword-ul "register" ajuta, dar compilatorul tot foloseste stiva pentru a
+salva vectori cand nu este nevoie (din cauza -O0). M-am gandit si la integrarea asm in C,
+dar mi s-a parut ca strica obiectivul temei, avand si o alta problema de asm. O alta
+optimizare pe care am considerat-o a fost inlocuirea sqrt(C) cu rsqrt(C) * C, insa nu am
+putut observa vreo imbunatatire pe systemul meu ryzen (posibil pentru ca sunt valori
+foarte mici?).
+
+vector_asm.asm
+Cu ajutorul cunostintelor dobandite la partea anterioara, implementarea in asm a fost
+surprinzator de usoara. Codul este destul de simplu, as mentiona doar ca am observat ca 
+compilatoarele in general folosesc alt registru pentru a "salva" rezultatul unei operatii
+decat registrele in care se afla operanzii (ex: vadd ymm0, ymm1, ymm1) asa ca am procedat
+la fel. Also inmultirea lui B cu 2 este doar o shiftare la stanga.
+
+Runtime pentru sistemul meu (Ryzen 3)
+Speed-up c     [2.5 - 3.4]
+Speed-up asm   [1.5 - 2.0]
