@@ -1,11 +1,64 @@
-* PC, laborator4 *
+Buzatu-Pahontu Mihnea-Nicolae 324CB
 
-Rulare schelet de cod:
-	cd link_emulator
-	make
-	cd ..
-	make
-	./run_experiment
+Lab 3 - PC
 
-Numărul de cadre trimise se poate modifica din lib.h - COUNT.
-Măsurare timp rulare: time ./run_experiment
+In send.c am creat doua functii wrapper peste send_message si recv_message care sa
+faciliteze trimiterea de cadre in timp ce altele sunt in transfer.
+
+Ca sa transmit un fisier am implementat urmatorul protocol:
+ - primul cadru transmite numarul de cadre necesare transmiterii numelui fisierului, 
+   continutului fisierului si checksum-ului
+ - urmatoarele cadre transmit numele fisierului
+ - un cadru cu payload null care confirma trimiterea completa a numelui
+ - urmatoarele cadre transmit continutul fisierului
+ - ultimul cadru trimite checksum-ul
+
+Pentru a verifica corectitudinea, am setat lungimea maxima a mesajelor ca fiind 8.
+Am testat cu mai multe valori pentru w si fucntioneaza corect.
+
+Pentru checksum am implementat niste functii ajutatoare in checksum.c
+
+Exemplu rulare:
+mihnea@IdeaPad:lab3$ ./run_experiment.sh 
+[RECEIVER] Starting.
+[SENDER] Starting.
+[RECEIVER] Receiving 16 packets.
+[SENDER] Sending 16 packets!
+[send]: one sent! 15 to go!
+[send]: one sent! 14 to go!
+[send]: one sent! 13 to go!
+[send]: one sent! 12 to go!
+[send]: one sent! 11 to go!
+[recv]: 1 received!
+[send]: one sent! 10 to go!
+[recv]: 2 received!
+[RECEIVER] Receiving file test.txt...
+[send]: one sent! 9 to go!
+[recv]: 3 received!
+[send]: one sent! 8 to go!
+[recv]: 4 received!
+[send]: one sent! 7 to go!
+[recv]: 5 received!
+[send]: one sent! 6 to go!
+[recv]: 6 received!
+[send]: one sent! 5 to go!
+[recv]: 7 received!
+[send]: one sent! 4 to go!
+[recv]: 8 received!
+[send]: one sent! 3 to go!
+[recv]: 9 received!
+[send]: one sent! 2 to go!
+[recv]: 10 received!
+[send]: one sent! 1 to go!
+[recv]: 11 received!
+[send]: one sent! 0 to go!
+[recv]: 12 received!
+[recv]: 13 received!
+[recv]: 14 received!
+[recv]: 15 received!
+[recv]: 16 received!
+[RECEIVER] Finished receiving, checksum correct!
+[SENDER] Job done, all sent.
+mihnea@IdeaPad:lab3$ diff test.txt newtest.txt 
+mihnea@IdeaPad:lab3$ 
+
