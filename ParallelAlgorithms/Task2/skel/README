@@ -1,0 +1,22 @@
+Buzatu-Pahontu Mihnea-Nicolae
+334CB
+
+Tema 2 APD
+
+Pentru a implementa functionalitatea Map-Reduce, am creat doua clase generice Map si Reduce.
+ - Clasa Map este paralelizata implicit, fiecare aplicare a functiei de mapare fiind 
+executata cu ajutorul unui ExecutorService. Este suficient sa cream o lista cu informatiile
+tuturor fragmentlor si sa o pasam clasei Map impreuna cu functia de mapare si numarul de
+threaduri dorit.
+ - Clasa Reduce nu poate fi implicit paralelizata, iar implementarea este asemantoare cu a
+unei functiei de fold/reduce dintr-un limbaj functional, avand nevoie de o functie care
+sa combine acumulatorul cu valoarea curenta. Paralelizarea actiunii de reduce se face in
+DocumentList, unde se creaza cate un task pentru fiecare Document in care este aplicat un
+Reduce.
+
+Restul fisierelor se ocupa de parsarea si modelarea datelor.
+Clasa Document modeleaza si parseaza fisierele cu text
+Clasa DocumentList ajuta la paralelizarea actiunilor pe mai multe Documente
+Clasa Fragment modeleaza informatiile continute intr-un fragment
+Clasa Rank modeleaza informatiile legate de rank-ul fisierele
+Clasa Fibonnaci ajuta la calcularea eficienta a sirului fibonacci

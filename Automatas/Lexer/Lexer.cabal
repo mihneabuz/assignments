@@ -1,0 +1,110 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           Lexer
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/Lexer#readme>
+homepage:       https://github.com/githubuser/Lexer#readme
+bug-reports:    https://github.com/githubuser/Lexer/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/Lexer
+
+library
+  exposed-modules:
+      Converter
+      DFA
+      Lexer
+      NFA
+      Parser
+      Regex
+      State
+  other-modules:
+      Paths_Lexer
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , containers >=0.6.5.1
+    , directory >=1.3.6.0
+    , process >=1.6.13.2
+    , split >=0.2.2
+    , text >=1.2.4.1
+  default-language: Haskell2010
+
+executable Etapa1
+  main-is: Etapa1.hs
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Etapa1.hs
+  build-depends:
+      Lexer
+    , base >=4.7 && <5
+    , containers >=0.6.5.1
+    , directory >=1.3.6.0
+    , process >=1.6.13.2
+    , split >=0.2.2
+    , text >=1.2.4.1
+  default-language: Haskell2010
+
+executable Etapa2
+  main-is: Etapa2.hs
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Etapa2.hs
+  build-depends:
+      Lexer
+    , base >=4.7 && <5
+    , containers >=0.6.5.1
+    , directory >=1.3.6.0
+    , process >=1.6.13.2
+    , split >=0.2.2
+    , text >=1.2.4.1
+  default-language: Haskell2010
+
+executable Main
+  main-is: Main.hs
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Main.hs -O3
+  build-depends:
+      Lexer
+    , base >=4.7 && <5
+    , containers >=0.6.5.1
+    , directory >=1.3.6.0
+    , process >=1.6.13.2
+    , split >=0.2.2
+    , text >=1.2.4.1
+  default-language: Haskell2010
+
+test-suite Lexer-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Tester
+      Paths_Lexer
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Lexer
+    , base >=4.7 && <5
+    , containers >=0.6.5.1
+    , directory >=1.3.6.0
+    , process >=1.6.13.2
+    , split >=0.2.2
+    , text >=1.2.4.1
+  default-language: Haskell2010
