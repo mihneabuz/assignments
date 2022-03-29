@@ -1,0 +1,11 @@
+Buzatu-Pahontu Mihnea-Nicolae
+334CB
+
+
+Tema 2 SO - stdio
+
+Am rezolvat tema (fara popen si pclose) doar in linux.
+
+Pentru structura am ales sa folosesc niste flag-uri definite de mine
+si cate 2 buffere. Al doilea buffer este alocat doar daca avem un 
+fisier deschis pentru read + write si este asociat write-ului.
