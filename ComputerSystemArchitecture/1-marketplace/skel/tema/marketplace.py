@@ -8,6 +8,11 @@ March 2021
 
 from threading import Lock
 import unittest
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.FileHandler(filename='marketplace.log', mode='w'))
 
 class Marketplace:
     """
@@ -31,6 +36,7 @@ class Marketplace:
         """
         id = len(self.producers)
         self.producers.append((Lock(), []))
+        logger.info(f'Registered producer {id}')
         return id
 
     def publish(self, producer_id, product):
@@ -45,7 +51,7 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again.
         """
-        # print(f'Got {product} from producer {producer_id}')
+        logger.info(f'Got {product} from producer {producer_id}')
         lock, queue = self.producers[producer_id]
 
         lock.acquire()
@@ -66,6 +72,7 @@ class Marketplace:
         """
         id = len(self.carts)
         self.carts.append([])
+        logger.info(f'Registered cart {id}')
         return id
 
     def add_to_cart(self, cart_id, product):
@@ -80,7 +87,7 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again
         """
-        # print(f'Adding {product} to cart {cart_id}')
+        logger.info(f'Adding {product} to cart {cart_id}')
         cart = self.carts[cart_id]
         
         for producer_id, (_, producer_list) in enumerate(self.producers):
@@ -108,7 +115,7 @@ class Marketplace:
         :type product: Product
         :param product: the product to remove from cart
         """
-        # print(f'Removing {product} from cart {cart_id}')
+        logger.info(f'Removing {product} from cart {cart_id}')
         cart = self.carts[cart_id]
 
         producer_id = -1
@@ -139,7 +146,7 @@ class Marketplace:
         :type cart_id: Int
         :param cart_id: id cart
         """
-        # print(f'Finished cart {cart_id}')
+        logger.info(f'Finished cart {cart_id}')
         cart = self.carts[cart_id]
 
         result = []
