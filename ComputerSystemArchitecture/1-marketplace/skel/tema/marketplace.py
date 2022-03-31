@@ -28,15 +28,19 @@ class Marketplace:
         """
         self.queue_size = queue_size_per_producer
         self.producers = []
+        self.producers_lock = Lock()
         self.carts = []
+        self.carts_lock = Lock()
 
     def register_producer(self):
         """
         Returns an id for the producer that calls this.
         """
+        self.producers_lock.acquire()
         id = len(self.producers)
         self.producers.append((Lock(), []))
         logger.info(f'Registered producer {id}')
+        self.producers_lock.release()
         return id
 
     def publish(self, producer_id, product):
@@ -70,9 +74,11 @@ class Marketplace:
 
         :returns an int representing the cart_id
         """
+        self.carts_lock.acquire()
         id = len(self.carts)
         self.carts.append([])
         logger.info(f'Registered cart {id}')
+        self.carts_lock.release()
         return id
 
     def add_to_cart(self, cart_id, product):
