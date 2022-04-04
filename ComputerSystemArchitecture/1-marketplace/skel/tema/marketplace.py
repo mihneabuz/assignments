@@ -7,12 +7,12 @@ March 2021
 """
 
 from threading import Lock
-import unittest
 import logging
+from logging.handlers import RotatingFileHandler
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-logger.addHandler(logging.FileHandler(filename='marketplace.log', mode='w'))
+logger.addHandler(RotatingFileHandler(filename='marketplace.log', backupCount=1, maxBytes=8192))
 
 class Marketplace:
     """
@@ -36,12 +36,11 @@ class Marketplace:
         """
         Returns an id for the producer that calls this.
         """
-        self.producers_lock.acquire()
-        id = len(self.producers)
-        self.producers.append((Lock(), []))
-        logger.info(f'Registered producer {id}')
-        self.producers_lock.release()
-        return id
+        with self.producers_lock:
+            prod_id = len(self.producers)
+            self.producers.append((Lock(), []))
+            logger.info('Registered producer %s', prod_id)
+        return prod_id
 
     def publish(self, producer_id, product):
         """
@@ -55,7 +54,7 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again.
         """
-        logger.info(f'Got {product} from producer {producer_id}')
+        logger.info('Got %s from producer %s', product, producer_id)
         lock, queue = self.producers[producer_id]
 
         lock.acquire()
@@ -64,9 +63,8 @@ class Marketplace:
             lock.release()
             return True
 
-        else:
-            lock.release()
-            return False
+        lock.release()
+        return False
 
     def new_cart(self):
         """
@@ -74,12 +72,12 @@ class Marketplace:
 
         :returns an int representing the cart_id
         """
-        self.carts_lock.acquire()
-        id = len(self.carts)
-        self.carts.append([])
-        logger.info(f'Registered cart {id}')
-        self.carts_lock.release()
-        return id
+        with self.carts_lock:
+            cart_id = len(self.carts)
+            self.carts.append([])
+            logger.info('Registered cart %s', cart_id)
+
+        return cart_id
 
     def add_to_cart(self, cart_id, product):
         """
@@ -93,9 +91,9 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again
         """
-        logger.info(f'Adding {product} to cart {cart_id}')
+        logger.info('Adding %s to cart %s', product, cart_id)
         cart = self.carts[cart_id]
-        
+
         for producer_id, (_, producer_list) in enumerate(self.producers):
             for prod in producer_list:
                 product_lock, product_available, listed_product = prod
@@ -106,8 +104,7 @@ class Marketplace:
                         cart.append((producer_id, listed_product))
                         product_lock.release()
                         return True
-                    else:
-                        product_lock.release()
+                    product_lock.release()
 
         return False
 
@@ -121,7 +118,7 @@ class Marketplace:
         :type product: Product
         :param product: the product to remove from cart
         """
-        logger.info(f'Removing {product} from cart {cart_id}')
+        logger.info('Removing %s from cart %s', product, cart_id)
         cart = self.carts[cart_id]
 
         producer_id = -1
@@ -133,7 +130,7 @@ class Marketplace:
                 cart_idx = idx
 
         if producer_id == -1 or cart_idx == -1:
-            print("ERROR: bad bad bad")
+            logger.error("ERROR: remove_from_cart encountered bad product")
 
         _, producer_list = self.producers[producer_id]
         for prod in producer_list:
@@ -152,7 +149,7 @@ class Marketplace:
         :type cart_id: Int
         :param cart_id: id cart
         """
-        logger.info(f'Finished cart {cart_id}')
+        logger.info('Finished cart %s', cart_id)
         cart = self.carts[cart_id]
 
         result = []
@@ -168,12 +165,6 @@ class Marketplace:
                     product_lock.release()
                     break
             producer_lock.release()
-        
+
         self.carts[cart_id] = ()
         return result
-
-
-
-class TestMarketplace(unittest.TestCase):
-    # TODO: unit tests
-    pass

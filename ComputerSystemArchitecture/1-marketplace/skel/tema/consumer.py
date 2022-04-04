@@ -39,22 +39,22 @@ class Consumer(Thread):
 
     def run(self):
         for cart in self.carts:
-            id = self.marketplace.new_cart()
+            cart_id = self.marketplace.new_cart()
             for action in cart:
                 if action['type'] == 'add':
                     for _ in range(action['quantity']):
-                        success = self.marketplace.add_to_cart(id, action['product'])
+                        success = self.marketplace.add_to_cart(cart_id, action['product'])
                         while not success:
                             sleep(self.wait_time)
-                            success = self.marketplace.add_to_cart(id, action['product'])
+                            success = self.marketplace.add_to_cart(cart_id, action['product'])
 
                 elif action['type'] == 'remove':
                     for _ in range(action['quantity']):
-                        self.marketplace.remove_from_cart(id, action['product'])
+                        self.marketplace.remove_from_cart(cart_id, action['product'])
 
                 else:
                     print(f'ERROR: bad action {action["type"]}')
 
-            products = self.marketplace.place_order(id)
+            products = self.marketplace.place_order(cart_id)
             for product in products:
                 print(f'{self.name} bought {product}')

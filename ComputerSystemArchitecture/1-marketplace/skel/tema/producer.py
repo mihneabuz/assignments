@@ -35,7 +35,7 @@ class Producer(Thread):
         super().__init__(**kwargs)
         self.products = products
         self.marketplace = marketplace
-        self.id = marketplace.register_producer()
+        self.prod_id = marketplace.register_producer()
         self.wait_time = republish_wait_time
 
     def run(self):
@@ -43,7 +43,7 @@ class Producer(Thread):
             for product, quantity, duration in self.products:
                 for _ in range(quantity):
                     sleep(duration)
-                    success = self.marketplace.publish(self.id, copy(product))
+                    success = self.marketplace.publish(self.prod_id, copy(product))
                     while not success:
                         sleep(self.wait_time)
-                        success = self.marketplace.publish(self.id, copy(product))
+                        success = self.marketplace.publish(self.prod_id, copy(product))
