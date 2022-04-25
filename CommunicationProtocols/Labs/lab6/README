@@ -1,0 +1,12 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+Lab 6 - PC
+
+server
+Am deschis un socket, i-am facut bind, si cat timp citest mesaje nenule din socket,
+le scriu in fisier.
+
+client
+Am deschis un socket si cat timp citesc din fisier scriu in socket, iar la final
+scriu un mesaj nul (un singur byte de 0).

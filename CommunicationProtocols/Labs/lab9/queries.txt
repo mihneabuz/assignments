@@ -1,0 +1,19 @@
+A     single-v4.protocoale.club
+AAAA  single-v6.protocoale.club
+
+A     single.protocoale.club
+AAAA  single.protocoale.club
+
+NS	  dorinel.protocoale.club
+
+A     multi-v4.protocoale.club
+AAAA  multi-v6.protocoale.club
+
+A     multi.protocoale.club
+AAAA  multi.protocoale.club
+
+CNAME pc.protocoale.club
+CNAME pcom.protocoale.club
+A 	  protocoale.protocoale.club
+
+MX    protocoale.club

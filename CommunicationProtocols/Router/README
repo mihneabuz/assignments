@@ -1,0 +1,39 @@
+Buztau-Pahontu Mihnea-Nicolae
+324CB
+
+Router Branch Tree
+
+			   get_packet
+	       /		       \
+	 	  /                 \
+	 ARP packet            IP packet
+	 /        \           /          \
+	/          \      ICMP ECHO       \
+ REQUEST     REPLY   (for router)  (To be forwarded)
+    |          |         |                 |
+send REPLY     |     send REPLY        (TTL <= 1)
+               |                      /          \  
+	   (update ARP Table)       ICMP TIMEOUT      \
+		       |                                (Route Table?)
+	    (send from queue)		   			   /              \
+									 ICMP DEST_UNREACH         \
+									                       (ARP Table?)
+														  /            \
+												     ARP REQUEST        \
+													      |           FORWARD
+											    (put packet in queue)
+
+
+
+
+
+Parsarea tabelei de routare se face in rtable.c
+Pentru a facilita LPM in timp sub O(N), am structurat tabela din 
+32 de arrays de route_table_entry sortate dupa prefix.
+(rtable->array[i] = lista de route_table_entry cu mask i)
+
+Pentru LPM, parcurg acesti arrays de la mask-ul cel mai mare (32) la cel mai mic
+si fac binary search pe fiecare, iar prima oara cand gasesc match, este si cel optim.
+Complexitatea este de O(logN)
+
+Am implementat si protocolul ARP si ICMP.

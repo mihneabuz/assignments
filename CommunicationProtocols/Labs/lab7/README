@@ -1,0 +1,8 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+Lab 7 - TCP
+
+Pentru ca 2 clienti sa poata comunica mai usor, am adaugat obtiunea de a
+scrie "skip" pentru a sarii peste trimiterea unui mesaj, si trece direct la
+asteptarea raspunsului.

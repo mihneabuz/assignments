@@ -1,0 +1,37 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+Tema 2 PA
+
+1) poduri
+
+Problema se rezuma la algoritmul lui lee, doar ca in loc de pereti, avem
+restrcitii de traversare. Pastrez directiile posibile intr-un map in functie
+de tipul podului.
+Matricea se parcurge cu BFS si cand ajungem la o pozitie invalida, am terminat.
+Complexitate parcurgere matrice O(n * m)
+
+
+2) adrese
+
+Am creat un graph cu toate numele si emai-urilie din input, dupa care am aplicat
+dfs pentru a gasi toate componentele conexe dupa care am sortat si afisat rezultatul.
+Complexitate O(n + m) unde n -> numar nume, m -> numar email-uri
+
+
+3) lego
+"Dynamic programming is just recursion with cache"
+
+Generez recursiv toate seturile posibile de numere, dupa care, pentru fiecare set,
+incerc sa gasesc secvanta consecutiva de lungime maxima, conform enuntului.
+
+functia can_sum(target, set, t) verifica daca setul de numere set poate ajunge la suma
+target din t numere. Aceasta functie este recursiva backtrack si ma folosesc de caching 
+pentru a ma asigura ca nu irosesc aceleasi calcule de mai multe ori. Cache-ul este facut
+dintr-un std::unordered_map plus o functie de hash facuta de mine.
+Exista si o versiune fara caching a functiei care este preferata pentru valori mici
+ale lui t.
+
+Complexitatea generarii solutiilor este Theta(Combinari de k luate cate n)
+Complexitatea verificarii solutiilor este O(k * t * T(can_sum))
+Complexitatea can_sum T(can_sum) = ??? ceva exponential, dar devine rapid cu caching

@@ -1,0 +1,38 @@
+Buzatu-Pahontu Mihnea-Nicolae
+324CB
+
+Task 1 - crypto
+Am citit lista de calculatoare intr-un std::vector si l-am sortat in functie de 
+rata de minare. Dupa am parcurs lista din calculator in calculator si am verificat 
+daca avem destul credit sa ajungem la rata urmatorului calculator. Daca nu, rata 
+finala se afla undeva intre calculatorul curent si urmatorul si se poate calcula.
+Complexitate O(nlogn) de la sortare, rezolvare greedy.
+
+Task 2 - stocks
+Aceasta problema se reduce la problema knapsack cu 2 dimensiuni de restrictii.
+Astfel, am rezolvat-o cu programare dinamica cu un matrice 3d (desi am redus-o la
+un singur array) in care dimensiunile sunt stock-ul, stop loss-ul si credit-ul.
+Am initializat pentru primul stock si dupa am completat matricea si am afisat ultimul
+element.
+Complexitate temporala si spatiala O(c * l * s), 
+unde c = credit, l = stop_loss si s = numar stock-uri.
+
+Task 3 - valley
+Din citire, am impartit inputul in 3 parti: 
+1) partea descrescatoare, de la primul element pana la primul minim global
+2) partea constanta, de la primul minim global pana la ultimul minim global
+3) partea crescataore, de la ultimul minim global la ultimul element
+Obs. Daca minimul global este unic, partea a doua dispare.
+Am parcurs fiecare parte separat si am calculat costul, dupa care le-am adunat.
+Complexitate O(n), rezolvare greedy.
+
+Task 4 - ridge
+Am rezolvat aceasta problema cu programare dinamica. Se observa ca din oricare element,
+trebuie sa scadem maxim 2 ca sa fie diferit de elementele adiacente.
+(Ex: 2 3 3 -> worst case, scadem 2 din elementul 2 ca sa obtinem -> 2 1 3)
+Astfel, matricea dp va avea doua dimensiuni, inaltimile si costul pentru excavarea de
+i unitati, unde i <- [0,1,2]. Daca o inaltime ajunge negativa, ceea ce este imposibil
+conform enuntului, costul va fi UINT64_MAX.
+Sursa inspiratie: https://morioh.com/p/c8ba2f466a21
+Rezultatul final va fi minimul dintre valorile de pe ultima linie a matricei dp.
+Complexitate temporala si spatiala O(n).
