@@ -1,0 +1,23 @@
+Buzatu-Pahontu Mihnea-Nicolae
+334CB
+
+Loader
+
+Implementare:
+    Loader:
+    - Se obtine handler-ul de SEGV inital al programului si se retine
+    - Se seteaza noul handler de SEGV care are urmatoararea logica:
+        - cauta segmentul din executabil care a produs semnalul
+            - daca aceste nu exista, se apeleaza handler vechi al programului
+        - incearca sa mapeze pagina in memorie
+            - daca maparea esueaza, apeleaza handlerul vechi al programului
+            
+    Mapare:
+    - se calculeaza indexul si apoi adresa paginii ce trebuie mapata
+    - se verifica daca pagina a mai fost mapata, verificand byte-ul din segment->data
+        - daca a mai fost mapata, avem un SEGV cauzat de permisiuni, maparea esueaza
+    - se face un mmap cu permisiuni de WRITE la adresa calculata, de marime page size
+    - se copiaza in memorie continutul paginii
+        - ce depaseste segment->file size se seteaza la 0
+    - se seteaza byte-ul corespunzator paginii din segment->data
+    - se face mprotect pentru a seta permisiunine corespunzatoare segmentului

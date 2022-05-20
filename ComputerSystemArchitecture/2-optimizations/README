@@ -1,0 +1,71 @@
+Implementare blas:
+	- am folosit cblas_dtrmm pentru inmultirile matricilor triunghilare
+	- am folosit cblas_dgemm pentru inmultirea matricilor normale
+	- am adunat rezultatele folosind un loop de la 0 la N*N
+
+implementare neopt:
+	- am alocat doua array-uri pentru a tine rezultatele intermediare
+	- am implementat in mod naiv functii pe matrice:
+		- inmutire, inmultire cu matrice triunghilara (superioara sau inferioara)
+		- transpose, transpose al unei matrice superior triunghilara
+		- suma
+	- am aplicat functiile conform formulei
+		- B x A x A^t = matmul_lower(matmul_upper(B, A), transpose_upper(A))
+		- B^t x B = matmul(transpose(B), B)
+	
+implementare opt_m:
+	- fata de implementarea neoptimizata am adus urmatoarele imbunatatiri:
+		- B^t x B si adaugarea la rezultat se calculeaza cu o singura functie
+	- micro-optimizari:
+		- folosirea keyword-ului register
+		- schimbarea oridinea for-urilor pentru a optimiza localitatea
+		- incrementarea pointerilor in locul folosirii indecsilor
+
+	- micro-optimizari care mai putea fi folosite:
+		- loop unrolling
+		- calucularea pe blocuri pentru a optimiza cache-ul
+
+
+performanta:
+	
+	- rulari locale (graficul timpilor se gaseste in graph.png)
+
+	neopt:
+	200:  0.05s
+	400:  0.37s
+	800:  3.76s
+	1200: 16.0s
+	1600: 60.3s
+
+	opt_m:
+	N=200:  0.02s
+	N=400:  0.14s
+	N=800:  1.07s
+	N=1200: 3.85s
+	N=1600: 13.4s
+
+	blas:
+	N=200:  0.01s
+	N=400:  0.02s
+	N=800:  0.13s
+	N=1200: 0.39s
+	N=1600: 0.94s
+
+	- se observa ca routinele optimizate din blas sunt vast superioare
+	- varianta cu routine din blas are un cache hit rate de 96% pentru L1 si 98% L3
+
+	- varianta optimizata manual este limitata de un cache hit rate de 86% pentru L1
+	  (in ciuda faptului ca hit rate-ul pentru L3 este de aproape 100%), impartirea
+	  computatiei pe blocuri ar fi imbunatatit substantial rezultatul
+	- varianta optimizata manual mai este limitata si de folosirea flag-ului -O0
+
+	- varianta neoptimizata este cu mult mai lenta decat celelalte, iar folosirea
+	  informatiei ca matricea A este superior triunghilara ii reduce timpul de rulare
+	  cu aproximativ 50% in testele mele
+	- varianta neoptimizata are un cache hit rate de 94% pentru L1 si aproape 100% L3,
+	  un rezultat mai bun decat varianta optimizata de mana, dar se observa si ca
+	  produce de 6 ori mai multe operatii de read si de 2 ori mai multe de write
+
+	- rata de cache hit pentru intructiuni este de 100% pentru toate variantele
+	- rata de branch prediction este peste 99% pentru toate variantele
+

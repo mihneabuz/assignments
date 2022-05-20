@@ -1,0 +1,20 @@
+Buzatu-Pahontu Mihnea-Nicolae
+334CB
+
+Tema 1 ASC - Marketplace
+
+Implementare
+ - Fiecare producator cate un mutex si o lista/un buffer de produse
+ - Mutex-ul producatorului este folosit pentru sincronizarea adaugarii in buffer
+   si eliminarii din buffer atunci cand un produs este cumparat
+ - Fiecare produs are cate un mutex, astfel mai multi consumeri pot citi produsele
+   dar un singur consumer il poate pune in cos
+ - Cosul de cumparaturi este reprezentat de o lista care contine referinte catre
+   produse si producatorul de la care sunt rezervate
+
+Resurse Utilizate
+ - Labaratoare ASC
+ - Laboratoare APD
+
+Git
+ - https://github.com/mihneabuz/assignments/tree/master/ComputerSystemArchitecture/1-marketplace/skel
