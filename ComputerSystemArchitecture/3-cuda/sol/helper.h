@@ -1,11 +1,26 @@
 #ifndef ACCPOP_HELPER_H
 #define ACCPOP_HELPER_H
 #include <stdio.h>
-float geoDistance(float lat1, float lon1, float lat2, float lon2);
+#include <vector>
 
 #define DEGREE_TO_RADIANS		0.01745329252f
 
-void sampleFileIO(float kmRange, const char* fileIn, const char* fileOut);
+struct city {
+    unsigned long long pop, reachable;
+    float phi, theta;
+
+    city() {}
+    
+    city(float lat, float lon, unsigned long long pop_) {
+        phi = (90.f - lat) * DEGREE_TO_RADIANS;
+        theta = lon * DEGREE_TO_RADIANS;
+        pop = pop_;
+        reachable = pop_;
+    }
+};
+
+void readCities(std::vector<city> &cities, const char *fileIn);
+void writeCities(std::vector<city> &cities, const char *fileOut);
 
 #define DIE(assertion, call_description)                    \
 do {                                                        \
